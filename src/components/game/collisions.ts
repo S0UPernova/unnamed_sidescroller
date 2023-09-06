@@ -1,41 +1,52 @@
-export function checkObjectCollisions(newPos: { x: number, y: number }, object1: gameObject, objects: gameObject[]): void {
+export function checkObjectCollisions(object1: gameObject, objects: gameObject[], delta: number): void {
   objects.forEach(object2 => {
-    checkForAnObjectCollision(newPos, object1, object2)
+    checkForAnObjectCollision(object1, object2, delta)
   })
 }
 
-export function checkForAnObjectCollision(newPos: vec2d, object1: gameObject, object2: gameObject) {
-// colliding top
-if (object2.collisions.top && isCollidingTop(newPos, object1, object2)) {
-  object1.velocity.y = 0
-  newPos.y = (object2.y - object1.height)
-  return
-  // break
-}
+export function checkForAnObjectCollision(object1: gameObject, object2: gameObject, delta: number) {
+  let newPos2 = {
+    x: object2.x + (object2.velocity.x * delta),
+    y: object2.y + (object2.velocity.y * delta)
+  }
+  let newPos = {
+    x: object1.x + (object1.velocity.x * delta),
+    y: object1.y + (object1.velocity.y * delta)
+  }
+  // colliding top
+  if (object2.collisions.top && isCollidingTop(object1, object1, object2)) {
+    object1.velocity.y = 0
+    // stops object from going through
+    object1.y = (object2.y - object1.height)
 
-// colliding bottom
-if (object2.collisions.bottom && isCollidingBottom(newPos, object1, object2)) {
-  object1.velocity.y = 0
-  newPos.y = object2.y + object2.height //- object1.height
-  return
-  // break
-}
+    // allows object on platform to move with platform
+    if (object2.velocity.x !== 0) {
+      const val = ( newPos2.x - object2.x)
+      object1.x = object1.x + val
+    }
+    return
+  }
 
-// colliding right
-if (object2.collisions.right && isCollidingRight(newPos, object1, object2)) {
-  object1.velocity.x = 0
-  newPos.x = object2.x + object2.width //- object1.height
-  return
-  // break
-}
+  // colliding bottom
+  if (object2.collisions.bottom && isCollidingBottom(object1, object1, object2)) {
+    object1.velocity.y = 0
+    object1.y = object2.y + object2.height //- object1.height
+    return
+  }
 
-// colliding left
-if (object2.collisions.left && isCollidingLeft(newPos, object1, object2)) {
-  object1.velocity.x = 0
-  newPos.x = (object2.x - object1.width)
-  return
-  // break
-}
+  // colliding right
+  if (object2.collisions.right && isCollidingRight(object1, object1, object2)) {
+    object1.velocity.x = 0
+    object1.x = object2.x + object2.width //- object1.height
+    return
+  }
+
+  // colliding left
+  if (object2.collisions.left && isCollidingLeft(object1, object1, object2)) {
+    object1.velocity.x = 0
+    object1.x = (object2.x - object1.width)
+    return
+  }
 }
 
 /**
@@ -87,25 +98,25 @@ function isCollidingRight(newPos: vec2d, object1: gameObject, object2: gameObjec
 }
 
 
-export function checkBoundsCollision(newPos: { x: number, y: number }, obj: gameObject, bounds: { x: number, y: number }): void {
+export function checkBoundsCollision(obj: gameObject, bounds: { x: number, y: number }): void {
   // too far to the right
-  if (newPos.x + obj.width > bounds.x) {
-    newPos.x = bounds.x - obj.width
+  if (obj.x + obj.width > bounds.x) {
+    obj.x = bounds.x - obj.width
   }
 
   // too far to the left
-  if (newPos.x < 0) {
-    newPos.x = 0
+  if (obj.x < 0) {
+    obj.x = 0
   }
 
   // too far down
-  if (newPos.y + obj.height > bounds.y) {
-    newPos.y = bounds.y - obj.height
+  if (obj.y + obj.height > bounds.y) {
+    obj.y = bounds.y - obj.height
     obj.velocity.y = 0
   }
 
   // too far up
-  if (newPos.y < obj.height) {
-    newPos.y = obj.height
+  if (obj.y < obj.height) {
+    obj.y = obj.height
   }
 }
