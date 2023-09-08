@@ -3,6 +3,8 @@ type gameObject = {
   y: number,
   width: number,
   height: number,
+  moveSpeed: number
+  jumpForce?: number
   color?: hexString
   velocity: { x: number, y: number },
   shape: Shape
@@ -16,6 +18,7 @@ type Collisions = {
   left?: boolean
   right?: boolean
 }
+
 type vec2d = {
   x: number, y: number
 }

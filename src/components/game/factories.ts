@@ -6,13 +6,14 @@ interface factoryInput {
   y: number
   height: number
   width: number,
+  jumpForce?: number
+  moveSpeed?: number
   shape?: Shape
   sprite?: sprites.Sprite
   color?: hexString
   collisions?: Collisions | boolean
 }
 export function gameObjectFactory(obj: factoryInput): gameObject {
-
   const image: HTMLImageElement = new Image(obj.width, obj.width);
   if (obj.sprite) {
     image.src = sprites[obj.sprite]
@@ -44,11 +45,14 @@ export function gameObjectFactory(obj: factoryInput): gameObject {
     }
   }
 
+
   return {
     x: obj.x,
     y: obj.y,
     height: obj.height,
     width: obj.width,
+    moveSpeed: obj.moveSpeed ? obj.moveSpeed : 0,
+    jumpForce: obj.jumpForce ? obj.jumpForce : undefined,
     color: obj?.color ? obj.color : undefined,
     velocity: { x: 0, y: 0 },
     shape: obj.shape ? obj.shape : "rectangle",

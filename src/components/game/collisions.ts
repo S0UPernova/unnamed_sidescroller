@@ -9,10 +9,6 @@ export function checkForAnObjectCollision(object1: gameObject, object2: gameObje
     x: object2.x + (object2.velocity.x * delta),
     y: object2.y + (object2.velocity.y * delta)
   }
-  let newPos = {
-    x: object1.x + (object1.velocity.x * delta),
-    y: object1.y + (object1.velocity.y * delta)
-  }
   // colliding top
   if (object2.collisions.top && isCollidingTop(object1, object1, object2)) {
     object1.velocity.y = 0
@@ -29,7 +25,7 @@ export function checkForAnObjectCollision(object1: gameObject, object2: gameObje
 
   // colliding bottom
   if (object2.collisions.bottom && isCollidingBottom(object1, object1, object2)) {
-    object1.velocity.y = 0
+    object1.velocity.y = -0.0001 // not significant and !== to 0 for a check elsewhere
     object1.y = object2.y + object2.height //- object1.height
     return
   }
