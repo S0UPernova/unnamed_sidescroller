@@ -5,6 +5,10 @@ export function checkObjectCollisions(object1: gameObject, objects: gameObject[]
 }
 
 export function checkForAnObjectCollision(object1: gameObject, object2: gameObject, delta: number) {
+  let newPos1 = {
+    x: object1.x + (object1.velocity.x * delta),
+    y: object1.y + (object1.velocity.y * delta)
+  }
   let newPos2 = {
     x: object2.x + (object2.velocity.x * delta),
     y: object2.y + (object2.velocity.y * delta)
@@ -32,8 +36,18 @@ export function checkForAnObjectCollision(object1: gameObject, object2: gameObje
 
   // colliding right
   if (object2.collisions.right && isCollidingRight(object1, object1, object2)) {
-    object1.velocity.x = 0
-    object1.x = object2.x + object2.width //- object1.height
+    const weight1 = object1.weight ? object1.weight : 0
+    const weight2 = object2.weight ? object2.weight : 0
+    if (weight1 > weight2) {
+      object2.velocity.x = 0//object1.velocity.x
+      object2.x = newPos1.x
+
+    }
+    else if (weight1 < weight2) {
+      object1.velocity.x = 0//object2.velocity.x
+      object1.x = newPos2.x + object2.width //- object1.height
+
+    }
     return
   }
 
@@ -87,32 +101,32 @@ function isCollidingLeft(newPos: vec2d, object1: gameObject, object2: gameObject
 
 function isCollidingRight(newPos: vec2d, object1: gameObject, object2: gameObject): boolean {
   return (
-    object1.velocity.x < 0 && isColliding(newPos, object1, object2)
+    (object1.velocity.x < 0 || object2.velocity.x > 0) && isColliding(newPos, object1, object2)
     && newPos.x > object2.x + object2.width - (object1.width / 4)
     && newPos.x + object1.width > object2.x + object2.width - (object1.width / 4)
   )
 }
 
 
-export function checkBoundsCollision(obj: gameObject, bounds: { x: number, y: number }): void {
+export function checkBoundsCollision(obj: gameObject, bounds: LevelBounds): void {
   // too far to the right
-  if (obj.x + obj.width > bounds.x) {
-    obj.x = bounds.x - obj.width
+  if (obj.x + obj.width > bounds.x2) {
+    obj.x = bounds.x2 - obj.width
   }
 
   // too far to the left
-  if (obj.x < 0) {
-    obj.x = 0
+  if (obj.x < bounds.x1) {
+    obj.x = bounds.x1
   }
 
   // too far down
-  if (obj.y + obj.height > bounds.y) {
-    obj.y = bounds.y - obj.height
+  if (obj.y + obj.height > bounds.y2) {
+    obj.y = bounds.y2 - obj.height
     obj.velocity.y = 0
   }
 
   // too far up
-  if (obj.y < obj.height) {
-    obj.y = obj.height
+  if (obj.y < bounds.y1) {
+    obj.y = bounds.y1
   }
 }

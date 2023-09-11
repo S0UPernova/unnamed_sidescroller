@@ -1,3 +1,7 @@
+import { calcGravity, calcMovement } from "./motionCalculations"
+import { checkBoundsCollision, checkObjectCollisions } from './collisions'
+import { cycleThroughPositions } from './gameActions'
+
 export function draw(ctx: CanvasRenderingContext2D, obj: gameObject): void {
   switch (obj.shape) {
     case "ellipse": {
@@ -18,5 +22,61 @@ export function draw(ctx: CanvasRenderingContext2D, obj: gameObject): void {
       }
       break
   }
+}
 
+// prabably should rename the file
+export function makeThingsMove(arr: (gameObject & CharacterObject)[], delta: number, bounds: LevelBounds) {
+  arr.forEach(obj => {
+    const restOfArr = arr.filter(el => el !== obj)
+    if (obj.positions && obj.positions.length > 0) cycleThroughPositions(obj)
+
+    if (obj.gravityMultiplier && obj.gravityMultiplier > 0) {
+      calcGravity(obj.velocity, delta) // add multiplier to this
+    }
+    if (obj.moveSpeed > 0) calcMovement(obj, delta)
+
+    if (obj.jumpForce !== undefined) {
+      checkBoundsCollision(obj, bounds)
+      checkObjectCollisions(obj, restOfArr, delta)
+    }
+  })
+}
+
+// todo get this working just right
+export function handleCamera(
+  ctx: CanvasRenderingContext2D,
+  camera: Camera,
+  player: CharacterObject,
+  bounds: LevelBounds,
+  delta: number
+) {
+  const cameraRight = camera.x + camera.width
+  const camFractionsX = (camera.width / 4)
+  const playerRight = player.x + player.width
+  const gapLeft = player.x - camera.x
+  const changeInX = (player.velocity.x * delta)
+
+  // camera move right
+  if (playerRight > cameraRight - camFractionsX && player.velocity.x > 0) {
+    if (player.x + changeInX - camFractionsX < bounds.x1) {
+      camera.x = bounds.x1
+    }
+    else {
+      camera.x = player.x + changeInX - gapLeft
+      ctx.translate(-(player.velocity.x * delta), camera.y)
+    }
+  }
+
+  // camera move left
+  if (player.x < camera.x + camFractionsX && player.velocity.x < 0) {
+
+    if (camera.x - changeInX > bounds.x2) {
+      camera.x = bounds.x2 - camera.width
+    }
+    else {
+      camera.x = camera.x + changeInX
+      ctx.translate(-(player.velocity.x * delta), camera.y)
+    }
+
+  }
 }
