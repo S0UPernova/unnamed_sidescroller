@@ -10,10 +10,13 @@ interface factoryInput {
   shape?: Shape
   sprite?: sprites.Sprite
   color?: hexString
-  positions?: vec2d[]
+
   jumpForce?: number // todo refactor this out
   weight?: number
-
+  
+  positions?: vec2d[]
+  cycleType?: CycleType
+  
   // make these part of a different Object type
   moveSpeed?: number
   collisions?: Collisions | boolean
@@ -56,13 +59,18 @@ export function gameObjectFactory(obj: factoryInput): gameObject {
     y: obj.y,
     height: obj.height,
     width: obj.width,
-    moveSpeed: obj.moveSpeed ? obj.moveSpeed : 0,
     color: obj?.color ? obj.color : undefined,
-    weight: obj.weight ? obj.weight : 1,
-    velocity: { x: 0, y: 0 },
     shape: obj.shape ? obj.shape : "rectangle",
     sprite: image.src ? image : undefined,
-    collisions: collisions
+    collisions: collisions,
+    
+    velocity: { x: 0, y: 0 },
+    moveSpeed: obj.moveSpeed ? obj.moveSpeed : 0,
+    weight: obj.weight ? obj.weight : 1,
+
+    positions: obj.positions ? [...obj.positions] : undefined,
+    positionInCycle: 0,
+    cycleType: obj.cycleType ? obj.cycleType : "circular"
   }
 }
 

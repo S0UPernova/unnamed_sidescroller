@@ -13,7 +13,10 @@ type gameObject = {
   collisions: Collisions
   positionInCycle?: number
   positions?: vec2d[]
+  cycleDirForward?: boolean
+  cycleType?: CycleType
 }
+type CycleType = "circular" | "reversing"
 
 type Camera = {
   x: number

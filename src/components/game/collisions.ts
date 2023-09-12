@@ -109,14 +109,15 @@ function isCollidingRight(newPos: vec2d, object1: gameObject, object2: gameObjec
 
 
 export function checkBoundsCollision(obj: gameObject, bounds: LevelBounds): void {
+  const borderPadding = 15
   // too far to the right
-  if (obj.x + obj.width > bounds.x2) {
-    obj.x = bounds.x2 - obj.width
+  if (obj.x + obj.width > bounds.x2 - borderPadding) {
+    obj.x = bounds.x2 - obj.width - borderPadding
   }
 
   // too far to the left
-  if (obj.x < bounds.x1) {
-    obj.x = bounds.x1
+  if (obj.x <= bounds.x1 + borderPadding) {
+    obj.x = bounds.x1 + borderPadding
   }
 
   // too far down

@@ -1,7 +1,6 @@
 - Fix platform leaving screen while tabbed away (fixed)
 - Consider refactoring gameObject to characterObject and gameObject to separate player/enemy from world elements (done-ish)
-
-- Add the actual sidescrolling
+- Add the actual sidescrolling (done)
 
 - Add level maker function that takes in a 2d array as input ad builds the level... perhaps a level factory
 - Add score

@@ -28,17 +28,20 @@ export function draw(ctx: CanvasRenderingContext2D, obj: gameObject): void {
 export function makeThingsMove(arr: (gameObject & CharacterObject)[], delta: number, bounds: LevelBounds) {
   arr.forEach(obj => {
     const restOfArr = arr.filter(el => el !== obj)
-    if (obj.positions && obj.positions.length > 0) cycleThroughPositions(obj)
-
+    
     if (obj.gravityMultiplier && obj.gravityMultiplier > 0) {
       calcGravity(obj.velocity, delta) // add multiplier to this
     }
-    if (obj.moveSpeed > 0) calcMovement(obj, delta)
-
+    
+    
+    calcMovement(obj, delta) 
+    
     if (obj.jumpForce !== undefined) {
       checkBoundsCollision(obj, bounds)
       checkObjectCollisions(obj, restOfArr, delta)
     }
+
+    if (obj.positions && obj.positions.length > 0) cycleThroughPositions(obj)
   })
 }
 
@@ -57,9 +60,9 @@ export function handleCamera(
   const changeInX = (player.velocity.x * delta)
 
   // camera move right
-  if (playerRight > cameraRight - camFractionsX && player.velocity.x > 0) {
-    if (player.x + changeInX - camFractionsX < bounds.x1) {
-      camera.x = bounds.x1
+  if (playerRight > cameraRight - camFractionsX && player.velocity.x > 0 ) {
+    if (cameraRight + changeInX > bounds.x2) {
+      camera.x = bounds.x2 - camera.width
     }
     else {
       camera.x = player.x + changeInX - gapLeft
@@ -70,8 +73,8 @@ export function handleCamera(
   // camera move left
   if (player.x < camera.x + camFractionsX && player.velocity.x < 0) {
 
-    if (camera.x - changeInX > bounds.x2) {
-      camera.x = bounds.x2 - camera.width
+    if (camera.x + changeInX < bounds.x1) {
+      camera.x = bounds.x1
     }
     else {
       camera.x = camera.x + changeInX

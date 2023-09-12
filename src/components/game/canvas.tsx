@@ -24,23 +24,30 @@ export default function Canvas(props: any) {
     canvas.height = window.innerHeight
     camera.height = canvas.height
     camera.width = canvas.width
-    
+
 
     // todo abstract level creation
     const bounds: LevelBounds = { x1: -800, y1: -800, x2: canvas.width + 800, y2: canvas.height }
     const objects: (gameObject & CharacterObject)[] = []
     const player = characterObjectFactory({ x: (canvas.width / 2) - 50, y: canvas.height / 2, height: 100, width: 100, shape: "sprite", sprite: "sprite", moveSpeed: 1, jumpForce: 3, weight: 0.5 });
     const block = gameObjectFactory({ x: canvas.width - 200, y: canvas.height - 200, height: 50, width: 200, color: "#500", shape: "rectangle", })
-    const platform = gameObjectFactory({ x: (canvas.width / 8) + 300, y: canvas.height - (canvas.height / 4), height: 50, width: 200, color: "#050", shape: "rectangle", collisions: { bottom: false }, moveSpeed: 0.1, weight: 1 })
-    platform.positions = [
-      { x: (canvas.width / 8) + 300, y: canvas.height - (canvas.height / 4) },
-      { x: (canvas.width / 8) + 300, y: canvas.height - (canvas.height / 2) }
-    ]
-    const platform2 = gameObjectFactory({ x: canvas.width - (canvas.width / 8), y: canvas.height - (canvas.height / 4), height: 50, width: 200, color: "#050", shape: "rectangle", collisions: { bottom: false }, moveSpeed: 0.1, weight: 1 })
-    platform2.positions = [
-      { x: (canvas.width / 8) + 600, y: canvas.height - (canvas.height / 8) },
-      { x: (canvas.width / 8) + 800, y: canvas.height - (canvas.height / 4) - 50 }
-    ]
+    const platform = gameObjectFactory({
+      x: (canvas.width / 8) + 300, y: canvas.height - (canvas.height / 4), height: 50, width: 100, color: "#050", shape: "rectangle", collisions: { bottom: false }, moveSpeed: 0.1, weight: 1,
+      positions: [
+        { x: (canvas.width / 8) + 600, y: canvas.height - (canvas.height / 4) },
+        { x: (canvas.width / 8) + 300, y: canvas.height - (canvas.height / 4) },
+        { x: (canvas.width / 8) + 300, y: canvas.height - (canvas.height / 2) },
+      ]
+    })
+    const platform2 = gameObjectFactory({
+      x: canvas.width - (canvas.width / 8), y: canvas.height - (canvas.height / 4), height: 50, width: 200, color: "#050", shape: "rectangle", collisions: { bottom: false }, moveSpeed: 0.1, weight: 1,
+      positions: [
+        { x: (canvas.width / 8) + 600, y: canvas.height - (canvas.height / 8) },
+        { x: (canvas.width / 8) + 800, y: canvas.height - (canvas.height / 8) - 50 },
+        { x: (canvas.width / 8) + 600, y: canvas.height - (canvas.height / 4) },
+      ],
+      cycleType: "reversing"
+    })
     const wall = gameObjectFactory({ x: canvas.width / 8, y: canvas.height / 2, height: canvas.height / 2, width: 50, color: "#500", shape: "rectangle", collisions: { left: false } })
 
     objects.push(block)
@@ -48,12 +55,14 @@ export default function Canvas(props: any) {
     objects.push(platform)
     objects.push(platform2)
     objects.push(player)
-
+    console.log('objects: ', objects)
+    console.log('platform: ', platform)
+    console.log('platform2: ', platform2)
 
     let frameId: number = 0
     const render = (timestamp: number): void => {
       // Value check here, because when tabbed away it suddenly adds all the time to delta
-      const delta = timestamp - lastTime < 1000 ? timestamp - lastTime : 0
+      const delta = timestamp - lastTime < 1000 ? timestamp - lastTime : 1
       lastTime = timestamp
 
       if (context) {
