@@ -1,7 +1,9 @@
 
 import React, { useEffect, useRef } from 'react'
+import { levelInit, LevelInitReturn } from './initLevel'
 import { handleKeyDown, handleKeyUp } from "./inputHandlers"
-import { levelInit, LevelInitReturn, levelRender } from './levelRender'
+import { levelRender } from './levelRender'
+
 export default function Canvas(props: any) {
   let lastTime: number = Date.now()
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -22,7 +24,7 @@ export default function Canvas(props: any) {
 
       if (context) {
         if (level === undefined) level = levelInit(1, canvas.height, canvas.width)
-        levelRender(context, delta, level, canvas.height, canvas.width)
+        levelRender(context, delta, level)
       }
       frameId = window.requestAnimationFrame(renderLoop)
     }

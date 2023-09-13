@@ -35,32 +35,42 @@ export function checkForAnObjectCollision(object1: gameObject, object2: gameObje
 
   // colliding right
   else if (object2.collisions.right && isHittingRight) {
+    // todo add weighted interaction, needs to take into account object2 collisions on the oposite side
+
     const weight1 = object1.weight ? object1.weight : 0
     const weight2 = object2.weight ? object2.weight : 0
     if (weight1 > weight2) {
-      object2.velocity.x = 0//object1.velocity.x
-      object2.x = newPos1.x
+      object2.velocity.x = 0
+      object2.x = newPos1.x - object2.width
     }
     else if (weight1 < weight2) {
-      object1.velocity.x = 0//object2.velocity.x
-      object1.x = newPos2.x + object2.width //- object1.height
+    object1.velocity.x = 0//object2.velocity.x
+    object1.x = newPos2.x + object2.width //- object1.height
     }
-    return
   }
 
   // colliding left
   else if (object2.collisions.left && isHittingLeft) {
+    // todo add weighted interaction, needs to take into account object2 collisions on the oposite side
+
+    const weight1 = object1.weight ? object1.weight : 0
+    const weight2 = object2.weight ? object2.weight : 0
+    if (weight1 > weight2) {
+      object2.velocity.x = 0
+      object2.x = newPos1.x + object1.width
+    }
+    else if (weight1 < weight2) {
     object1.velocity.x = 0
-    object1.x = (object2.x - object1.width)
-    return
+    object1.x = (newPos2.x - object1.width)
+    }
   }
 
- // colliding bottom
- else if (object2.collisions.bottom && isHittingBottom) {
-  object1.velocity.y = -0.0001 // not significant and !== to 0 for a check elsewhere
-  object1.y = object2.y + object2.height //- object1.height
-  return
-}
+  // colliding bottom
+  else if (object2.collisions.bottom && isHittingBottom) {
+    object1.velocity.y = -0.0001 // not significant and !== to 0 for a check elsewhere
+    object1.y = object2.y + object2.height //- object1.height
+    return
+  }
 
 
 }
@@ -87,8 +97,8 @@ function isCollidingTop(newPos1: vec2d, newPos2: vec2d, object1: gameObject, obj
     (object1.velocity.y > 0 || object2.velocity.y < 0)
     && isColliding(newPos1, newPos2, object1, object2)
 
-     // Adding some margin into the object 
-    && Math.floor(object1.y + object1.height) < Math.floor(object2.y + object1.height / 2) 
+    // Adding some margin into the object 
+    && Math.floor(object1.y + object1.height) < Math.floor(object2.y + object1.height / 2)
   )
 }
 
@@ -98,10 +108,10 @@ function isCollidingBottom(newPos1: vec2d, newPos2: vec2d, object1: gameObject, 
     && isColliding(object1, newPos2, object1, object2)
 
     // Adding some margin into the object 
-    && Math.floor(object1.y) > Math.floor(object2.y + object2.height - (object1.height / 2)) 
+    && Math.floor(object1.y) > Math.floor(object2.y + object2.height - (object1.height / 2))
     // making sure that it is not triggered while inside object when it doesn't have collisions on one side
-    && Math.floor(object1.y + object1.height) > Math.floor(object2.y + object2.height - (object1.height / 2)) 
-    )
+    && Math.floor(object1.y + object1.height) > Math.floor(object2.y + object2.height - (object1.height / 2))
+  )
 }
 
 function isCollidingLeft(newPos1: vec2d, newPos2: vec2d, object1: gameObject, object2: gameObject): boolean {
@@ -109,7 +119,7 @@ function isCollidingLeft(newPos1: vec2d, newPos2: vec2d, object1: gameObject, ob
     (object1.velocity.x > 0 || object2.velocity.x < 0)
     && isColliding(newPos1, newPos2, object1, object2)
     // Adding some margin into object
-    && Math.floor(object1.x + object1.width) < Math.floor(object2.x + (object1.width / 2)) 
+    && Math.floor(object1.x + object1.width) < Math.floor(object2.x + (object1.width / 2))
   )
 }
 

@@ -1,9 +1,18 @@
 - Fix platform leaving screen while tabbed away (fixed)
 - Consider refactoring gameObject to characterObject and gameObject to separate player/enemy from world elements (done-ish)
 - Add the actual sidescrolling (done)
+- Fix side collisions, and getting stuck in ground (worked around)
+
 
 - Add level maker function (needs work still)
-- Add rest of colision logic with weights (also fix side collisions, and getting stuck in ground)
+- Add layers from tiled
+- Make player start come from tiled
+- Make moving platforms come from tiled
+
+- Add rest of collision logic with weights
+- Finish adding pushable blocks that consider being pinned to a wall (not just plowing through)
+- Add reset to reset all positions and such
+
 
 
 - Add score
