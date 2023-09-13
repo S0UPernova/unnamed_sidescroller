@@ -168,7 +168,7 @@ export function handleCamera(
 
   // camera move right
   if (playerRight > cameraRight - camFractionsX && player.velocity.x > 0) {
-    if (cameraRight + changeInX - 10 > bounds.x2) {
+    if (cameraRight + changeInX > bounds.x2) {
       camera.x = bounds.x2 - camera.width
     }
     else {
@@ -180,7 +180,7 @@ export function handleCamera(
   // camera move left
   if (player.x < camera.x + camFractionsX && player.velocity.x < 0) {
 
-    if (camera.x + changeInX + 10 < bounds.x1) {
+    if (camera.x + changeInX < bounds.x1) {
       camera.x = bounds.x1
     }
     else {
@@ -193,7 +193,7 @@ export function handleCamera(
   // camera move up
   if (player.y < camera.y + camFractionsY && player.velocity.y < 0) {
 
-    if (camera.y + changeInY + 10 < bounds.y1) {
+    if (camera.y + changeInY < bounds.y1) {
       camera.y = bounds.y1
     }
     else {
@@ -205,7 +205,7 @@ export function handleCamera(
   // camera move down
   if (playerBottom > cameraBottom - camFractionsY && player.velocity.y > 0) {
 
-    if (cameraBottom + changeInY - 10 > bounds.y2) {
+    if (cameraBottom + changeInY> bounds.y2) {
       camera.y = bounds.y2 - camera.height
     }
     else {
