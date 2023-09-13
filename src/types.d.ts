@@ -55,6 +55,7 @@ type CharacterActions = {
   crouch: CharacterAction
   moveRight: CharacterAction
   moveLeft: CharacterAction
+  enableGravity: CharacterAction
 } & gameObjectAction
 
 type CharacterAction = (obj: gameObject, keyDown: boolean) => void

@@ -1,10 +1,11 @@
 import { checkBoundsCollision, checkObjectCollisions } from "./collisions"
 
-export function calcGravity(velocity: { x: number, y: number, }, delta: number) {
+export function calcGravity(player: CharacterObject, delta: number) {
+  if (player.gravityMultiplier === undefined) return
   const gravity = 0.01
   const terminalVelocity = 1
-  const speed = velocity.y + (gravity * delta)
-  velocity.y = speed > terminalVelocity ? terminalVelocity : speed
+  const speed = player.velocity.y + (gravity * delta)
+  player.velocity.y = speed > terminalVelocity ? terminalVelocity : speed
 }
 
 export function calcMovement(obj: gameObject, delta: number) {

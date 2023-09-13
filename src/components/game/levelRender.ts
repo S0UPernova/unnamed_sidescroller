@@ -40,7 +40,7 @@ export function levelInit(levelNumber: number, canvasHeight: number, canvasWidth
   const levelWidth = currentLevel.width * currentLevel.tilewidth
   const levelHeight = currentLevel.height * currentLevel.tileheight
 
-  const block = gameObjectFactory({ x: levelWidth  - 400, y: levelHeight - (currentLevel.tileheight * 6), height: 50, width: 200, color: "#500", shape: "rectangle", })
+  const block = gameObjectFactory({ x: levelWidth - 400, y: levelHeight - (currentLevel.tileheight * 6), height: 50, width: 200, color: "#500", shape: "rectangle", })
   const platform = gameObjectFactory({
     x: (bounds.x2 / 8) + 600, y: bounds.y2 - (bounds.y2 / 4), height: 50, width: 100, color: "#050", shape: "rectangle", collisions: { bottom: false }, moveSpeed: 0.1, weight: 1,
     positions: [
@@ -52,17 +52,16 @@ export function levelInit(levelNumber: number, canvasHeight: number, canvasWidth
   const platform2 = gameObjectFactory({
     x: (bounds.x2 / 8) + 600, y: bounds.y2 - (bounds.y2 / 8), height: 50, width: 200, color: "#050", shape: "rectangle", collisions: { bottom: false }, moveSpeed: 0.1, weight: 1,
     positions: [
-      { x: (bounds.x2 / 8) + 600, y: bounds.y2 - (bounds.y2 / 8) },
-      { x: (bounds.x2 / 8) + 800, y: bounds.y2 - (bounds.y2 / 8) - 50 },
-      { x: (bounds.x2 / 8) + 600, y: bounds.y2 - (bounds.y2 / 4) },
+      { x: (bounds.x2 / 8) + 600, y: bounds.y2 - currentLevel.tileheight * 9 },
+      { x: (bounds.x2 / 8) + 1000, y: bounds.y2 - currentLevel.tileheight * 6 },
+      { x: (bounds.x2 / 8) + 600, y: bounds.y2 - currentLevel.tileheight * 3 },
     ],
     cycleType: "reversing"
   })
   const wall = gameObjectFactory({ x: bounds.x2 / 8, y: bounds.y2 / 2, height: bounds.x2 / 6, width: 50, color: "#500", shape: "rectangle", collisions: { left: false } })
 
 
-  const player = characterObjectFactory({ x: (bounds.x2 / 2) - 50, y: bounds.y1 + 50, height: 128, width: 128, shape: "sprite", sprite: "sprite", moveSpeed: 1, jumpForce: 3, weight: 0.5 })
-  console.log(player)
+  const player = characterObjectFactory({ x: (bounds.x2 / 2) - 50, y: bounds.y1 + 50, height: 40, width: 40, shape: "sprite", sprite: "sprite", moveSpeed: 1, jumpForce: 3, weight: 0.5 })
   const dynamicObjects: gameObject[] = []
 
   dynamicObjects.push(platform)
@@ -82,7 +81,7 @@ export function levelRender(context: CanvasRenderingContext2D, delta: number, le
   context.clearRect(levelData.bounds.x1, levelData.bounds.y1, Math.abs(levelData.bounds.x1) + levelData.bounds.x2, Math.abs(levelData.bounds.y1) + levelData.bounds.y2)
 
   handleControls(levelData.player)
-  makeThingsMove([...levelData.staticObjects, ...levelData.dynamicObjects, levelData.player], delta, levelData.bounds)
+  makeThingsMove(levelData.player, [...levelData.staticObjects, ...levelData.dynamicObjects], delta, levelData.bounds)
   // todo handle camera
   handleCamera(context, levelData.camera, levelData.player, levelData.bounds, delta) // todo fix stickyness
 
@@ -92,6 +91,11 @@ export function levelRender(context: CanvasRenderingContext2D, delta: number, le
   levelData.dynamicObjects.forEach(object => {
     draw(context, object)
   })
+  if (levelData.player.gravityMultiplier === undefined) {
+    context.scale(2, 2)
+    context.fillText("press space to start", (levelData.bounds.x2 / 4) - 50, levelData.bounds.y2 / 10)
+    context.scale(.5, .5)
+  }
   draw(context, levelData.player)
 }
 
@@ -99,11 +103,10 @@ function buildObjects(level: LevelJson) {
   const objects: gameObject[] = []
   for (let y = 0; y < level.height; y++) {
     for (let x = 0; x < level.width; x++) {
-      // console.log(x)
       const pos = (y * level.width) + x
       const arr = level.layers[0].data
       if (arr[pos] > 0) {
-        const object = gameObjectFactory({ x: x * level.tilewidth, y: y * level.tileheight, height: level.tileheight, width: level.tilewidth, color: "#888", collisions: true})
+        const object = gameObjectFactory({ x: x * level.tilewidth, y: y * level.tileheight, height: level.tileheight, width: level.tilewidth, color: "#888", collisions: true })
         objects.push(object)
       }
     }
@@ -115,22 +118,24 @@ function buildObjects(level: LevelJson) {
 
 
 // prabably should rename the file
-export function makeThingsMove(arr: (gameObject & CharacterObject)[], delta: number, bounds: LevelBounds) {
+export function makeThingsMove(player: CharacterObject, arr: (gameObject)[], delta: number, bounds: LevelBounds) {
   arr.forEach(obj => {
-    const restOfArr = arr.filter(el => el !== obj)
-    
-    if (obj.gravityMultiplier && obj.gravityMultiplier > 0) {
-      calcGravity(obj.velocity, delta) // add multiplier to this
-    }
+    // const restOfArr = arr.filter(el => el !== obj)
+
     calcMovement(obj, delta)
-    
-    if (obj.jumpForce !== undefined) {
-      checkBoundsCollision(obj, bounds)
-      checkObjectCollisions(obj, restOfArr, delta)
-    }
 
     if (obj.positions && obj.positions.length > 0) cycleThroughPositions(obj)
   })
+
+  if (player.gravityMultiplier && player.gravityMultiplier > 0) {
+    calcGravity(player, delta) // add multiplier to this
+  }
+  calcMovement(player, delta)
+
+  if (player.jumpForce !== undefined) {
+    checkBoundsCollision(player, bounds)
+    checkObjectCollisions(player, arr, delta)
+  }
 }
 
 // todo get this working just right

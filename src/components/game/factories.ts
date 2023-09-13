@@ -78,7 +78,7 @@ export function gameObjectFactory(obj: factoryInput): gameObject {
 export function characterObjectFactory(obj: factoryInput): CharacterObject {
   const character: CharacterObject = {
     ...gameObjectFactory(obj),
-  gravityMultiplier: 1,
+  gravityMultiplier: undefined,
   weight: obj.weight ? obj.weight : .25,
   jumpForce: obj.jumpForce ? obj.jumpForce : 3
 }

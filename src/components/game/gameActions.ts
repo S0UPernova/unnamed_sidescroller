@@ -59,6 +59,9 @@ export function moveTo(obj: gameObject, target: vec2d, margin: number): boolean 
   obj.velocity.y = (ty / dist) * thrust
   return false
 }
+export function enableGravity(obj: CharacterObject, keyDown: boolean) {
+  obj.gravityMultiplier = 1 // maybe have a default and current
+}
 /**
  * 
  * @param {gameObject} obj 
@@ -122,7 +125,8 @@ export const CharacterActionMap = {
   moveLeft,
   moveRight,
   jump,
-  crouch
+  crouch,
+  enableGravity
 }
 
 export const GameObjectActionMap = {

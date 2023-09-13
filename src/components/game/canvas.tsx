@@ -17,7 +17,7 @@ export default function Canvas(props: any) {
     let level: LevelInitReturn | undefined = undefined
 
     const renderLoop = (timestamp: number): void => {
-      const delta = timestamp - lastTime < 200 ? timestamp - lastTime : 0
+      const delta = !isNaN(timestamp) && timestamp - lastTime < 200 ? timestamp - lastTime : 0
       lastTime = timestamp
 
       if (context) {

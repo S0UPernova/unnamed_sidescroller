@@ -7,7 +7,7 @@ const controlMap: Controls = {
   "ArrowRight": "moveRight",
   "ArrowDown": "crouch",
   "ArrowLeft": "moveLeft",
-
+  " ": "enableGravity",
   "w": "jump",
   "a": "moveLeft",
   "s": "crouch",
