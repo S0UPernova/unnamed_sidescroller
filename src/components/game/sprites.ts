@@ -1,9 +1,11 @@
 import sprite from "../../assets/sprite.svg"
+import tileset from "../game/levels/tileset.png"
 
 export type Sprite = (
-  "sprite"
+  "sprite" | "tileset"
   )
 
 export {
-  sprite
+  sprite,
+  tileset
 }

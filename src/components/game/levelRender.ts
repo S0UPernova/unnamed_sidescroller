@@ -5,7 +5,7 @@ import * as level1 from './levels/level1.json'
 import { calcGravity, calcMovement } from "./motionCalculations"
 import { checkBoundsCollision, checkObjectCollisions } from './collisions'
 import { cycleThroughPositions } from './gameActions'
-import { platform } from 'os'
+import { tileset } from './sprites'
 
 export interface LevelInitReturn {
   staticObjects: gameObject[]
@@ -61,7 +61,7 @@ export function levelInit(levelNumber: number, canvasHeight: number, canvasWidth
   const wall = gameObjectFactory({ x: bounds.x2 / 8, y: bounds.y2 / 2, height: bounds.x2 / 6, width: 50, color: "#500", shape: "rectangle", collisions: { left: false } })
 
 
-  const player = characterObjectFactory({ x: (bounds.x2 / 2) - 50, y: bounds.y1 + 50, height: 40, width: 40, shape: "sprite", sprite: "sprite", moveSpeed: 1, jumpForce: 3, weight: 0.5 })
+  const player = characterObjectFactory({ x: (bounds.x2 / 2) - 50, y: bounds.y1 + 50, height: 64, width: 64, shape: "sprite", sprite: "sprite", moveSpeed: 1, jumpForce: 3, weight: 0.5 })
   const dynamicObjects: gameObject[] = []
 
   dynamicObjects.push(platform)
@@ -78,7 +78,7 @@ export function levelInit(levelNumber: number, canvasHeight: number, canvasWidth
 }
 
 export function levelRender(context: CanvasRenderingContext2D, delta: number, levelData: LevelInitReturn, cameraHeight: number, cameraWidth: number) {
-  context.clearRect(levelData.bounds.x1, levelData.bounds.y1, Math.abs(levelData.bounds.x1) + levelData.bounds.x2, Math.abs(levelData.bounds.y1) + levelData.bounds.y2)
+  context.clearRect(levelData.bounds.x1, levelData.bounds.y1, levelData.bounds.x2 + 10, levelData.bounds.y2 + 10)
 
   handleControls(levelData.player)
   makeThingsMove(levelData.player, [...levelData.staticObjects, ...levelData.dynamicObjects], delta, levelData.bounds)
@@ -101,12 +101,23 @@ export function levelRender(context: CanvasRenderingContext2D, delta: number, le
 
 function buildObjects(level: LevelJson) {
   const objects: gameObject[] = []
-  for (let y = 0; y < level.height; y++) {
-    for (let x = 0; x < level.width; x++) {
-      const pos = (y * level.width) + x
+  for (let row = 0; row < level.height; row++) {
+    for (let col
+      = 0; col < level.width; col++) {
+      const pos = (row * level.width) + col
       const arr = level.layers[0].data
       if (arr[pos] > 0) {
-        const object = gameObjectFactory({ x: x * level.tilewidth, y: y * level.tileheight, height: level.tileheight, width: level.tilewidth, color: "#888", collisions: true })
+        const object = gameObjectFactory({
+          x: col * level.tilewidth,
+          y: row * level.tileheight,
+          height: level.tileheight,
+          width: level.tilewidth,
+          collisions: true, // add prop in editor
+          shape: "sprite",
+          sprite: level.tilesets[0].name as "tileset", // todo make this more dynamic
+          tileNum: arr[pos],
+          tilesetData: level.tilesets[0]
+        })
         objects.push(object)
       }
     }
@@ -148,31 +159,59 @@ export function handleCamera(
 ) {
   const cameraRight = camera.x + camera.width
   const camFractionsX = (camera.width / 4)
+  const camFractionsY = (camera.height / 4)
   const playerRight = player.x + player.width
-  const gapLeft = player.x - camera.x
+  const playerBottom = player.y + player.height
+  const cameraBottom = camera.y + camera.height
   const changeInX = (player.velocity.x * delta)
+  const changeInY = (player.velocity.y * delta)
 
   // camera move right
   if (playerRight > cameraRight - camFractionsX && player.velocity.x > 0) {
-    if (cameraRight + changeInX > bounds.x2) {
+    if (cameraRight + changeInX - 10 > bounds.x2) {
       camera.x = bounds.x2 - camera.width
     }
     else {
-      camera.x = player.x + changeInX - gapLeft
-      ctx.translate(-(player.velocity.x * delta), camera.y)
+      camera.x = camera.x + changeInX// - gapLeft
+      ctx.translate(-changeInX, 0)
     }
   }
 
   // camera move left
   if (player.x < camera.x + camFractionsX && player.velocity.x < 0) {
 
-    if (camera.x + changeInX < bounds.x1) {
+    if (camera.x + changeInX + 10 < bounds.x1) {
       camera.x = bounds.x1
     }
     else {
       camera.x = camera.x + changeInX
-      ctx.translate(-(player.velocity.x * delta), camera.y)
+      ctx.translate(-changeInX, 0)
     }
 
   }
+
+  // camera move up
+  if (player.y < camera.y + camFractionsY && player.velocity.y < 0) {
+
+    if (camera.y + changeInY + 10 < bounds.y1) {
+      camera.y = bounds.y1
+    }
+    else {
+      camera.y = camera.y + changeInY
+      ctx.translate(0, -changeInY)
+    }
+  }
+
+  // camera move down
+  if (playerBottom > cameraBottom - camFractionsY && player.velocity.y > 0) {
+
+    if (cameraBottom + changeInY - 10 > bounds.y2) {
+      camera.y = bounds.y2 - camera.height
+    }
+    else {
+      camera.y = camera.y + changeInY
+      ctx.translate(0, -changeInY)
+    }
+  }
+
 }

@@ -75,64 +75,50 @@ export function checkForAnObjectCollision(object1: gameObject, object2: gameObje
  */
 export function isColliding(newPos1: vec2d, newPos2: vec2d, object1: gameObject, object2: gameObject): boolean {
   return (
-    object1.y + object1.height > object2.y
-    && object1.y < object2.y + object2.height
+    Math.floor(object1.y + object1.height) > Math.floor(object2.y)
+    && Math.floor(object1.y) < Math.floor(object2.y + object2.height)
 
-    && object1.x + object1.width > object2.x
-    && object1.x < object2.x + object2.width)
+    && Math.floor(object1.x + object1.width) > Math.floor(object2.x)
+    && Math.floor(object1.x) < Math.floor(object2.x + object2.width))
 }
 
-function isCollidingTop(newPos1: vec2d, newPos2: vec2d, object1: gameObject, object2: gameObject, margin: number = 100): boolean {
+function isCollidingTop(newPos1: vec2d, newPos2: vec2d, object1: gameObject, object2: gameObject): boolean {
   return (
     (object1.velocity.y > 0 || object2.velocity.y < 0)
     && isColliding(newPos1, newPos2, object1, object2)
 
-    && object1.x + object1.width > object2.x //+ margin
-    && object1.x < object2.x + object2.width //- margin
-
-    // && newPos1.y + object1.height < object2.y + (object2.height / 8)
-    && object1.y + object1.height < object2.y + object1.height / 2 // margin is based on player height rn
-
+     // Adding some margin into the object 
+    && Math.floor(object1.y + object1.height) < Math.floor(object2.y + object1.height / 2) 
   )
 }
 
-function isCollidingBottom(newPos1: vec2d, newPos2: vec2d, object1: gameObject, object2: gameObject, margin: number = 20): boolean {
+function isCollidingBottom(newPos1: vec2d, newPos2: vec2d, object1: gameObject, object2: gameObject): boolean {
   return (
     (object1.velocity.y < 0 || object2.velocity.y > 0)
     && isColliding(object1, newPos2, object1, object2)
 
-    && object1.x + object1.width > object2.x// + margin
-    && object1.x < object2.x + object2.width// - margin
-
-    // && newPos1.y < newPos2.y + object2.height - (object2.height / 8)
-    && object1.y > object2.y + object2.height / 2// - margin 
-    && object1.y + object1.height > object2.y + object2.height
-  )
+    // Adding some margin into the object 
+    && Math.floor(object1.y) > Math.floor(object2.y + object2.height - (object1.height / 2)) 
+    // making sure that it is not triggered while inside object when it doesn't have collisions on one side
+    && Math.floor(object1.y + object1.height) > Math.floor(object2.y + object2.height - (object1.height / 2)) 
+    )
 }
 
-function isCollidingLeft(newPos1: vec2d, newPos2: vec2d, object1: gameObject, object2: gameObject, margin: number = 15): boolean {
+function isCollidingLeft(newPos1: vec2d, newPos2: vec2d, object1: gameObject, object2: gameObject): boolean {
   return (
     (object1.velocity.x > 0 || object2.velocity.x < 0)
     && isColliding(newPos1, newPos2, object1, object2)
-
-    && object1.y + object1.height > object2.y// + margin
-    && object1.y < object2.y + object2.height// - margin
-
-    // && newPos1.x + object1.width < newPos2.x + (object2.width / 8)
-    && object1.x + object1.width < object2.x + object2.width / 2 //+ margin 
+    // Adding some margin into object
+    && Math.floor(object1.x + object1.width) < Math.floor(object2.x + (object1.width / 2)) 
   )
 }
 
-function isCollidingRight(newPos1: vec2d, newPos2: vec2d, object1: gameObject, object2: gameObject, margin: number = 15): boolean {
+function isCollidingRight(newPos1: vec2d, newPos2: vec2d, object1: gameObject, object2: gameObject): boolean {
   return (
     (object1.velocity.x < 0 || object2.velocity.x > 0)
     && isColliding(newPos1, newPos2, object1, object2)
-
-    && object1.y + object1.height > newPos2.y// + margin
-    && object1.y < object2.y + object2.height// - margin
-
-    // && newPos1.x > newPos2.x + object2.width - (object2.width / 8)
-    && object1.x > object2.x - object2.width / 2 //- margin
+    // Adding some margin into object
+    && Math.floor(object1.x) > Math.floor(object2.x + object2.width - (object1.width / 2))
   )
 }
 

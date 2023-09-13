@@ -20,6 +20,8 @@ interface factoryInput {
   // make these part of a different Object type
   moveSpeed?: number
   collisions?: Collisions | boolean
+  tileNum?: number
+  tilesetData?: TileSet
 }
 export function gameObjectFactory(obj: factoryInput): gameObject {
   const image: HTMLImageElement = new Image(obj.width, obj.width);
@@ -63,7 +65,8 @@ export function gameObjectFactory(obj: factoryInput): gameObject {
     shape: obj.shape ? obj.shape : "rectangle",
     sprite: image.src ? image : undefined,
     collisions: collisions,
-    
+    tileNum: obj.tileNum !== undefined ? obj.tileNum : undefined,
+    tilesetData: obj.tilesetData !== undefined ? obj.tilesetData : undefined,
     velocity: { x: 0, y: 0 },
     moveSpeed: obj.moveSpeed ? obj.moveSpeed : 0,
     weight: obj.weight ? obj.weight : 1,

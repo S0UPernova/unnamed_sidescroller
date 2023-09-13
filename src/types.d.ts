@@ -5,16 +5,20 @@ type gameObject = {
   width: number,
   height: number,
   weight?: number
-  moveSpeed: number
   color?: hexString
-  velocity: { x: number, y: number },
   shape: Shape
   collisions: Collisions
+  
+  moveSpeed: number
+  velocity: { x: number, y: number },
   positionInCycle?: number
   positions?: vec2d[]
   cycleDirForward?: boolean
   cycleType?: CycleType
+
   sprite: HTMLImageElement | undefined
+  tileNum?: number
+  tilesetData?: TileSet
 }
 type CycleType = "circular" | "reversing"
 type Camera = {

@@ -16,16 +16,31 @@ export function draw(ctx: CanvasRenderingContext2D, obj: gameObject): void {
       break
     case "sprite":
       if (obj.sprite !== undefined) {
-        
-        ctx.drawImage(
-          obj.sprite,
-          obj.x,
-          obj.y,
-          obj.width,
-          obj.width
-          
-          );
+        if (obj.tilesetData === undefined || obj.tileNum === undefined) {
 
+          ctx.drawImage(
+            obj.sprite,
+            obj.x,
+            obj.y,
+            obj.width,
+            obj.width,
+            )
+          }
+          else {
+            const col = obj.tileNum % obj.tilesetData.columns -1
+            const row = Math.floor(obj.tileNum / obj.tilesetData?.columns)
+            ctx.drawImage(
+              obj.sprite,
+              col * obj.tilesetData.tilewidth,
+              row * obj.tilesetData.tileheight,
+              obj.tilesetData.tilewidth,
+              obj.tilesetData.tileheight,
+              obj.x,
+              obj.y,
+              obj.tilesetData.tilewidth,
+              obj.tilesetData.tileheight,
+            )
+          }
       }
       break
   }
