@@ -3,8 +3,8 @@
 - Add the actual sidescrolling (done)
 
 - Add level maker function (needs work still)
+- Add rest of colision logic with weights (also fix side collisions, and getting stuck in ground)
 
-- Add rest of colision logic with weights
 
 - Add score
 - Add enemies

@@ -37,36 +37,38 @@ export function levelInit(levelNumber: number, canvasHeight: number, canvasWidth
     height: canvasHeight,
     width: canvasWidth,
   }
+  const levelWidth = currentLevel.width * currentLevel.tilewidth
+  const levelHeight = currentLevel.height * currentLevel.tileheight
 
-  // const block = gameObjectFactory({ x: bounds.x2 - 200, y: bounds.y2 - 200, height: 50, width: 200, color: "#500", shape: "rectangle", })
-  // const platform = gameObjectFactory({
-  //   x: bounds.x2 - (bounds.x2 / 8) + 300, y: bounds.y2 - (bounds.y2 / 4), height: 50, width: 100, color: "#050", shape: "rectangle", collisions: { bottom: false }, moveSpeed: 0.1, weight: 1,
-  //   positions: [
-  //     { x: (bounds.y2 / 8) + 600, y: bounds.x2 - (bounds.x2 / 4) },
-  //     { x: (bounds.y2 / 8) + 300, y: bounds.x2 - (bounds.x2 / 4) },
-  //     { x: (bounds.y2 / 8) + 300, y: bounds.x2 - (bounds.x2 / 2) },
-  //   ]
-  // })
-  // const platform2 = gameObjectFactory({
-  //   x: bounds.y2 - (bounds.y2 / 8), y: bounds.x2 - (bounds.x2 / 4), height: 50, width: 200, color: "#050", shape: "rectangle", collisions: { bottom: false }, moveSpeed: 0.1, weight: 1,
-  //   positions: [
-  //     { x: (bounds.y2 / 8) + 600, y: bounds.x2 - (bounds.x2 / 8) },
-  //     { x: (bounds.y2 / 8) + 800, y: bounds.x2 - (bounds.x2 / 8) - 50 },
-  //     { x: (bounds.y2 / 8) + 600, y: bounds.x2 - (bounds.x2 / 4) },
-  //   ],
-  //   cycleType: "reversing"
-  // })
-  // const wall = gameObjectFactory({ x: bounds.y2 / 8, y: bounds.x2 / 2, height: bounds.x2 / 2, width: 50, color: "#500", shape: "rectangle", collisions: { left: false } })
+  const block = gameObjectFactory({ x: levelWidth  - 400, y: levelHeight - (currentLevel.tileheight * 6), height: 50, width: 200, color: "#500", shape: "rectangle", })
+  const platform = gameObjectFactory({
+    x: (bounds.x2 / 8) + 600, y: bounds.y2 - (bounds.y2 / 4), height: 50, width: 100, color: "#050", shape: "rectangle", collisions: { bottom: false }, moveSpeed: 0.1, weight: 1,
+    positions: [
+      { x: (bounds.x2 / 8) + 600, y: bounds.y2 - (bounds.y2 / 4) },
+      { x: (bounds.x2 / 8) + 300, y: bounds.y2 - (bounds.y2 / 4) },
+      { x: (bounds.x2 / 8) + 300, y: bounds.y2 - (bounds.y2 / 2) },
+    ]
+  })
+  const platform2 = gameObjectFactory({
+    x: (bounds.x2 / 8) + 600, y: bounds.y2 - (bounds.y2 / 8), height: 50, width: 200, color: "#050", shape: "rectangle", collisions: { bottom: false }, moveSpeed: 0.1, weight: 1,
+    positions: [
+      { x: (bounds.x2 / 8) + 600, y: bounds.y2 - (bounds.y2 / 8) },
+      { x: (bounds.x2 / 8) + 800, y: bounds.y2 - (bounds.y2 / 8) - 50 },
+      { x: (bounds.x2 / 8) + 600, y: bounds.y2 - (bounds.y2 / 4) },
+    ],
+    cycleType: "reversing"
+  })
+  const wall = gameObjectFactory({ x: bounds.x2 / 8, y: bounds.y2 / 2, height: bounds.x2 / 6, width: 50, color: "#500", shape: "rectangle", collisions: { left: false } })
 
 
-  const player = characterObjectFactory({ x: (canvasWidth / 2) - 50, y: 50, height: 100, width: 100, shape: "sprite", sprite: "sprite", moveSpeed: 1, jumpForce: 3, weight: 0.5 })
+  const player = characterObjectFactory({ x: (bounds.x2 / 2) - 50, y: bounds.y1 + 50, height: 128, width: 128, shape: "sprite", sprite: "sprite", moveSpeed: 1, jumpForce: 3, weight: 0.5 })
   console.log(player)
   const dynamicObjects: gameObject[] = []
 
-  // dynamicObjects.push(platform)
-  // dynamicObjects.push(platform2)
-  // objects.push(block)
-  // objects.push(wall)
+  dynamicObjects.push(platform)
+  dynamicObjects.push(platform2)
+  objects.push(block)
+  objects.push(wall)
   return {
     staticObjects: objects,
     dynamicObjects: dynamicObjects,
@@ -101,7 +103,7 @@ function buildObjects(level: LevelJson) {
       const pos = (y * level.width) + x
       const arr = level.layers[0].data
       if (arr[pos] > 0) {
-        const object = gameObjectFactory({ x: x * level.tilewidth, y: y * level.tileheight, height: level.tileheight, width: level.tilewidth, color: "#888" })
+        const object = gameObjectFactory({ x: x * level.tilewidth, y: y * level.tileheight, height: level.tileheight, width: level.tilewidth, color: "#888", collisions: true})
         objects.push(object)
       }
     }
