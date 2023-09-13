@@ -2,7 +2,10 @@
 - Consider refactoring gameObject to characterObject and gameObject to separate player/enemy from world elements (done-ish)
 - Add the actual sidescrolling (done)
 
-- Add level maker function that takes in a 2d array as input ad builds the level... perhaps a level factory
+- Add level maker function (needs work still)
+
+- Add rest of colision logic with weights
+
 - Add score
 - Add enemies
 - Add enemy "AI"

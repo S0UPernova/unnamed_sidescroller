@@ -9,6 +9,7 @@ export function calcGravity(velocity: { x: number, y: number, }, delta: number) 
 
 export function calcMovement(obj: gameObject, delta: number) {
   // set initial values
+  if (delta === 0) return
   let newPos = {
     x: obj.x + (obj.velocity.x * delta),
     y: obj.y + (obj.velocity.y * delta)

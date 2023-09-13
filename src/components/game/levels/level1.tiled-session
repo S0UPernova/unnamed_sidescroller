@@ -1,0 +1,61 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "#tileset": {
+            "scaleInDock": 1
+        },
+        "level1.js": {
+            "scale": 0.33,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 550,
+                "y": 1781.8181818181818
+            }
+        },
+        "level1.js#tileset": {
+            "scaleInDock": 1
+        },
+        "level1.json": {
+            "scale": 0.2426953125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 813.7775631739898,
+                "y": 1277.321744728794
+            }
+        },
+        "level1.json#tileset": {
+            "scaleInDock": 1
+        }
+    },
+    "last.exportedFilePath": "D:/projects/typescript/vite-project/src/components/game/levels",
+    "last.imagePath": "D:/projects/typescript/vite-project/src/components/game/levels",
+    "map.height": 16,
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "map.lastUsedFormat": "js",
+    "map.tileHeight": 64,
+    "map.tileWidth": 64,
+    "map.width": 32,
+    "openFiles": [
+    ],
+    "project": "level1.tiled-project",
+    "recentFiles": [
+        "level1.js",
+        "level1.json"
+    ],
+    "tileset.embedInMap": true,
+    "tileset.tileSize": {
+        "height": 64,
+        "width": 64
+    }
+}

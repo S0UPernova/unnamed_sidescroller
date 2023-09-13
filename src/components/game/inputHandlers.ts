@@ -51,11 +51,11 @@ function handleControls(obj: CharacterObject) {
   }
 }
 
-function handleKeyUp(e: KeyboardEvent, obj: gameObject) {
+function handleKeyUp(e: KeyboardEvent) {
   input[e.key] = false
 }
 
-function handleKeyDown(e: KeyboardEvent, obj: gameObject) {
+function handleKeyDown(e: KeyboardEvent) {
   input[e.key] = true
 }
 

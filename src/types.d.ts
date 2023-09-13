@@ -9,15 +9,14 @@ type gameObject = {
   color?: hexString
   velocity: { x: number, y: number },
   shape: Shape
-  sprite: HTMLImageElement | undefined
   collisions: Collisions
   positionInCycle?: number
   positions?: vec2d[]
   cycleDirForward?: boolean
   cycleType?: CycleType
+  sprite: HTMLImageElement | undefined
 }
 type CycleType = "circular" | "reversing"
-
 type Camera = {
   x: number
   y: number
@@ -51,7 +50,7 @@ type Controls = {
 type vec2d = {
   x: number, y: number
 }
-type CharacterActions = { 
+type CharacterActions = {
   jump: CharacterAction
   crouch: CharacterAction
   moveRight: CharacterAction
@@ -68,3 +67,45 @@ type gameObjectActions = {
 
 type hexString = `#${string}`
 type Shape = "ellipse" | "rectangle" | "sprite"
+type TileSet = {
+  "columns": number,
+  "firstgid": number,
+  "image": string,
+  "imageheight": number,
+  "imagewidth": number,
+  "margin": number,
+  "name": string,
+  "spacing": number,
+  "tilecount": number,
+  "tileheight": number,
+  "tilewidth": number
+}
+type LevelLayer = {
+  "data": number[],
+  "height": number,
+  "id": number,
+  "name": string,
+  "opacity": number,
+  "type": string,
+  "visible": boolean,
+  "width": number,
+  "x": number,
+  "y": number
+}
+type LevelJson = {
+  "compressionlevel": number,
+  "height": number,
+  "infinite": boolean,
+  "layers": LevelLayer[],
+  "nextlayerid": number,
+  "nextobjectid": number,
+  "orientation": string, // TODO add the other options for this
+  "renderorder": string, // TODO add the other options for this
+  "tiledversion": string,
+  "tileheight": number,
+  "tilesets": TileSet[],
+  "tilewidth": number,
+  "type": string, // TODO add the other options for this
+  "version": string,
+  "width": number
+}
