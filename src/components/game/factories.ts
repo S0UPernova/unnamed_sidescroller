@@ -71,7 +71,6 @@ export function gameObjectFactory(obj: factoryInput): gameObject {
     velocity: { x: 0, y: 0 },
     moveSpeed: obj.moveSpeed ? obj.moveSpeed : 0,
     weight: obj.weight ? obj.weight : 1,
-
     positions: obj.positions ? [...obj.positions] : undefined,
     positionInCycle: 0,
     cycleType: obj.cycleType ? obj.cycleType : "circular"

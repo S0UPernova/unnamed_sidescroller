@@ -30,12 +30,14 @@ export function draw(ctx: CanvasRenderingContext2D, obj: gameObject): void {
         }
         else {
           if (obj.tileNum === undefined || obj.tileNum === 0) return
-          const col = obj.tileNum % (obj.tilesetData.columns) -1
-          const row = Math.floor(obj.tileNum / obj.tilesetData?.columns)
-          if (obj.tileNum === 18) console.log(`row: ${row}, col: ${col}, corrected: ${(9*row)}`)
+          //! minus ones here because 0 show a lack of value, but spritesheet math starts at 0
+          const col = (obj.tileNum - 1) % (obj.tilesetData.columns)
+          const row = Math.floor((obj.tileNum - 1) / obj.tilesetData?.columns)
+
+          if (obj.tileNum === 18) console.log(`row: ${row}, col: ${col}, corrected: ${(9 * row)}`)
           ctx.drawImage(
             obj.sprite,
-            col === -1 ? ((9*row) - row) : col * obj.tilesetData.tilewidth,
+            col * obj.tilesetData.tilewidth,
             row * obj.tilesetData.tileheight,
             obj.tilesetData.tilewidth,
             obj.tilesetData.tileheight,
