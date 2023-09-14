@@ -30,8 +30,8 @@
             "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1841,
-                "y": 732
+                "x": 1218,
+                "y": 964
             }
         },
         "level1.json#tileset": {
@@ -50,6 +50,7 @@
         "level1.json"
     ],
     "project": "level1.tiled-project",
+    "property.type": "string",
     "recentFiles": [
         "level1.json",
         "level1.js"

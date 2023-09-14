@@ -1,4 +1,5 @@
 // import imgUrl from "../../assets/sprite.svg"
+import { CharacterObject, Collisions, CycleType, gameObject, hexString, Shape, TileSet, vec2d } from "../../types"
 import * as sprites from "./sprites"
 
 interface factoryInput {

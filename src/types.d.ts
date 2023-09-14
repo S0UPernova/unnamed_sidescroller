@@ -1,3 +1,6 @@
+import { ExecFileOptionsWithStringEncoding } from "child_process"
+import { Sprite } from "./components/game/sprites"
+
 // todo make separate dynamic gameObject
 type gameObject = {
   x: number,
@@ -8,7 +11,7 @@ type gameObject = {
   color?: hexString
   shape: Shape
   collisions: Collisions
-  
+
   moveSpeed: number
   velocity: { x: number, y: number },
   positionInCycle?: number
@@ -85,7 +88,17 @@ type TileSet = {
   "tileheight": number,
   "tilewidth": number
 }
+
+type WhereIs = "backgound" | "midground" | "foregound"
+
+type LayerProps = {
+  "name": string
+  "type": string
+  "value": string
+}
+
 type LevelLayer = {
+  "class"?: string
   "data": number[],
   "height": number,
   "id": number,
@@ -95,8 +108,11 @@ type LevelLayer = {
   "visible": boolean,
   "width": number,
   "x": number,
-  "y": number
+  "y": number,
+  "properties"?: LayerProps[]
 }
+
+
 type LevelJson = {
   "compressionlevel": number,
   "height": number,

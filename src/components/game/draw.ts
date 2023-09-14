@@ -1,3 +1,5 @@
+import { gameObject } from "../../types"
+import { tileset } from "./sprites"
 
 
 export function draw(ctx: CanvasRenderingContext2D, obj: gameObject): void {
@@ -24,29 +26,25 @@ export function draw(ctx: CanvasRenderingContext2D, obj: gameObject): void {
             obj.y,
             obj.width,
             obj.width,
-            )
-          }
-          else {
-            const col = obj.tileNum % obj.tilesetData.columns -1
-            const row = Math.floor(obj.tileNum / obj.tilesetData?.columns)
-            ctx.drawImage(
-              obj.sprite,
-              col * obj.tilesetData.tilewidth,
-              row * obj.tilesetData.tileheight,
-              obj.tilesetData.tilewidth,
-              obj.tilesetData.tileheight,
-              obj.x,
-              obj.y,
-              obj.tilesetData.tilewidth,
-              obj.tilesetData.tileheight,
-            )
-          }
+          )
+        }
+        else {
+          if (obj.tileNum === undefined || obj.tileNum === 0) return
+          const col = obj.tileNum % (obj.tilesetData.columns) -1
+          const row = Math.floor(obj.tileNum / obj.tilesetData?.columns)
+          if (obj.tileNum === 18) console.log(`row: ${row}, col: ${col}, corrected: ${(9*row)}`)
+          ctx.drawImage(
+            obj.sprite,
+            col === -1 ? ((9*row) - row) : col * obj.tilesetData.tilewidth,
+            row * obj.tilesetData.tileheight,
+            obj.tilesetData.tilewidth,
+            obj.tilesetData.tileheight,
+            obj.x,
+            obj.y,
+            obj.tilesetData.tilewidth,
+            obj.tilesetData.tileheight,
+          )
+        }
       }
-      break
   }
 }
-
-
-
-
-

@@ -1,3 +1,5 @@
+import { gameObject, LevelBounds, vec2d } from "../../types"
+
 export function checkObjectCollisions(object1: gameObject, objects: gameObject[], delta: number): void {
   objects.forEach(object2 => {
     checkForAnObjectCollision(object1, object2, delta)

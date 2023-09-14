@@ -3,6 +3,7 @@
 - Add the actual sidescrolling (done)
 - Fix side collisions, and getting stuck in ground (worked around)
 
+- Fix multiples of 9 for tilesheet not showing correctly (asap)
 
 - Add level maker function (needs work still)
 - Add layers from tiled

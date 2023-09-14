@@ -1,3 +1,4 @@
+import { CharacterObject, Controls } from "../../types"
 import { CharacterActionMap, GameObjectActionMap } from "./gameActions"
 
 
