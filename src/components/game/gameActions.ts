@@ -1,3 +1,5 @@
+import { CharacterObject, gameObject, vec2d } from "../../types"
+
 export function moveRight(obj: CharacterObject, keyDown: boolean) {
   if (keyDown && obj.velocity.x >= 0) {
     obj.velocity.x = obj.moveSpeed

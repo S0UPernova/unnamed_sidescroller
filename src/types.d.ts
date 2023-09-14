@@ -1,3 +1,4 @@
+import { BlobOptions } from "buffer"
 import { ExecFileOptionsWithStringEncoding } from "child_process"
 import { Sprite } from "./components/game/sprites"
 
@@ -94,7 +95,7 @@ type WhereIs = "backgound" | "midground" | "foregound"
 type LayerProps = {
   "name": string
   "type": string
-  "value": string
+  "value": string | boolean
 }
 
 type LevelLayer = {
@@ -114,6 +115,7 @@ type LevelLayer = {
 
 
 type LevelJson = {
+  "class"?: string,
   "compressionlevel": number,
   "height": number,
   "infinite": boolean,
