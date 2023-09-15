@@ -34,7 +34,6 @@ export function draw(ctx: CanvasRenderingContext2D, obj: gameObject): void {
           const col = (obj.tileNum - 1) % (obj.tilesetData.columns)
           const row = Math.floor((obj.tileNum - 1) / obj.tilesetData?.columns)
 
-          if (obj.tileNum === 18) console.log(`row: ${row}, col: ${col}, corrected: ${(9 * row)}`)
           ctx.drawImage(
             obj.sprite,
             col * obj.tilesetData.tilewidth,

@@ -55,60 +55,45 @@ export function handleCamera(
   const playerRight = player.x + player.width
   const playerBottom = player.y + player.height
   const cameraBottom = camera.y + camera.height
-  const changeInX = (player.velocity.x * delta)
-  const changeInY = (player.velocity.y * delta)
 
+  // todo use logic from left and right in up and down
   // camera move right
-  if (playerRight > cameraRight - camFractionsX && player.velocity.x > 0) {
-    if (cameraRight + changeInX > bounds.x2) {
-      ctx.translate(-(bounds.x2 - cameraRight), 0)
-      camera.x = bounds.x2 - camera.width
+  if (playerRight > cameraRight - camFractionsX) {
+    let moveBy = playerRight - (cameraRight - camFractionsX)
+    if (cameraRight + moveBy > bounds.x2) {
+      moveBy = bounds.x2 - cameraRight
     }
-    else {
-      camera.x = camera.x + changeInX// - gapLeft
-      ctx.translate(-changeInX, 0)
-    }
+    camera.x += moveBy
+    ctx.translate(-moveBy, 0)
   }
 
   // camera move left
-  if (player.x < camera.x + camFractionsX && player.velocity.x < 0) {
-
-    if (camera.x + changeInX < bounds.x1) {
-      ctx.translate((camera.x - bounds.x1), 0)
-      camera.x = bounds.x1
-
+  if (player.x < camera.x + camFractionsX) {
+    let moveBy = player.x - (camera.x + camFractionsX)
+    if (camera.x + moveBy < bounds.x1) {
+      moveBy = bounds.x1 - camera.x
     }
-    else {
-      camera.x = camera.x + changeInX
-      ctx.translate(-changeInX, 0)
-    }
-
+    camera.x += moveBy
+    ctx.translate(-moveBy, 0)
   }
 
   // camera move up
-  if (player.y < camera.y + camFractionsY && player.velocity.y < 0) {
-
-    if (camera.y + changeInY < bounds.y1) {
-      ctx.translate(0,(camera.y - bounds.y1))
-      camera.y = bounds.y1
+  if (player.y < camera.y + camFractionsY) {
+    let moveBy = player.y - (camera.y + camFractionsY)
+    if (camera.y + moveBy < bounds.y1) {
+      moveBy = bounds.y1 - camera.y
     }
-    else {
-      camera.y = camera.y + changeInY
-      ctx.translate(0, -changeInY)
-    }
+    camera.y += moveBy
+    ctx.translate(0, -moveBy)
   }
 
   // camera move down
-  if (playerBottom > cameraBottom - camFractionsY && player.velocity.y > 0) {
-
-    if (cameraBottom + changeInY> bounds.y2) {
-      ctx.translate(0, -(bounds.y2 - cameraBottom))
-      camera.y = bounds.y2 - camera.height
+  if (playerBottom > cameraBottom - camFractionsY) {
+    let moveBy = playerBottom - (cameraBottom - camFractionsY)
+    if (cameraBottom + moveBy > bounds.y2) {
+      moveBy = bounds.y2 - cameraBottom
     }
-    else {
-      camera.y = camera.y + changeInY
-      ctx.translate(0, -changeInY)
-    }
+    camera.y += moveBy
+    ctx.translate(0, -moveBy)
   }
-
 }
