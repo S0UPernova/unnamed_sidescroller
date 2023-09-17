@@ -8,7 +8,12 @@
 
 - Add level maker function (needs work still)
 - Add layers from tiled as in trees in front of player should block the player
+    maybe use player position rounded player x/y / hight/width to get the tile x/y, add position in map to gameObject 
+    and use the player row to tell if he should be infront or behind something
+    figure out make it the trees an object layer
 - Maybe allow player to traverse between layers to allow different movement options
+    - 
+
 - Add documentations for how to use tiled with this
 
 - Make player start come from tiled

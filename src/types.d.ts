@@ -19,12 +19,13 @@ type gameObject = {
   positions?: vec2d[]
   cycleDirForward?: boolean
   cycleType?: CycleType
-
+  tileRow?: number
   sprite: HTMLImageElement | undefined
   tileNum?: number
   tilesetData?: TileSet
 }
 type CycleType = "circular" | "reversing"
+
 type Camera = {
   x: number
   y: number
@@ -75,7 +76,9 @@ type gameObjectActions = {
 }
 
 type hexString = `#${string}`
+
 type Shape = "ellipse" | "rectangle" | "sprite"
+
 type TileSet = {
   "columns": number,
   "firstgid": number,
@@ -90,12 +93,24 @@ type TileSet = {
   "tilewidth": number
 }
 
-type WhereIs = "backgound" | "midground" | "foregound"
+type WhereIs = "backgound" | "midground" | "foreground"
 
 type LayerProps = {
   "name": string
   "type": string
-  "value": string | boolean
+  "value": string | boolean | number
+}
+
+type LayerObject = {
+  "height": number,
+  "id": number,
+  "name": string,
+  "rotation": number,
+  "type": string,
+  "visible": boolean,
+  "width": number,
+  "x": number,
+  "y": number
 }
 
 type LevelLayer = {
@@ -111,6 +126,7 @@ type LevelLayer = {
   "x": number,
   "y": number,
   "properties"?: LayerProps[]
+  "objects"?: LayerObject[]
 }
 
 

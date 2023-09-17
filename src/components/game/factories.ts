@@ -11,16 +11,18 @@ interface factoryInput {
   shape?: Shape
   sprite?: sprites.Sprite
   color?: hexString
-
   jumpForce?: number // todo refactor this out
   weight?: number
   
   positions?: vec2d[]
+
   cycleType?: CycleType
   
   // make these part of a different Object type
   moveSpeed?: number
   collisions?: Collisions | boolean
+
+  tileRow?: number
   tileNum?: number
   tilesetData?: TileSet
 }
@@ -69,6 +71,7 @@ export function gameObjectFactory(obj: factoryInput): gameObject {
     tileNum: obj.tileNum !== undefined ? obj.tileNum : undefined,
     tilesetData: obj.tilesetData !== undefined ? obj.tilesetData : undefined,
     velocity: { x: 0, y: 0 },
+    tileRow: obj.tileRow !== undefined ? obj.tileRow : undefined,
     moveSpeed: obj.moveSpeed ? obj.moveSpeed : 0,
     weight: obj.weight ? obj.weight : 1,
     positions: obj.positions ? [...obj.positions] : undefined,
