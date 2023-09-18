@@ -1,4 +1,5 @@
 import { gameObject } from "../../types"
+import { levelInit } from "./initLevel"
 import { tileset } from "./sprites"
 
 
@@ -18,8 +19,7 @@ export function draw(ctx: CanvasRenderingContext2D, obj: gameObject): void {
       break
     case "sprite":
       if (obj.sprite !== undefined) {
-        if (obj.tilesetData === undefined || obj.tileNum === undefined) {
-
+        if (obj.tilesetData === undefined || obj.tileArr === undefined) {
           ctx.drawImage(
             obj.sprite,
             obj.x,
@@ -29,10 +29,10 @@ export function draw(ctx: CanvasRenderingContext2D, obj: gameObject): void {
           )
         }
         else {
-          if (obj.tileNum === undefined || obj.tileNum === 0) return
+          if (obj.tileArr === undefined || obj.tileArr[0] === 0) return
           //! minus ones here because 0 show a lack of value, but spritesheet math starts at 0
-          const col = (obj.tileNum - 1) % (obj.tilesetData.columns)
-          const row = Math.floor((obj.tileNum - 1) / obj.tilesetData?.columns)
+          const col = (obj.tileArr[0] - 1) % (obj.tilesetData.columns)
+          const row = Math.floor((obj.tileArr[0] - 1) / obj.tilesetData?.columns)
 
           ctx.drawImage(
             obj.sprite,
@@ -47,5 +47,30 @@ export function draw(ctx: CanvasRenderingContext2D, obj: gameObject): void {
           )
         }
       }
+      break
+    case "tileArr":
+      obj.tileArr?.forEach((num, i) => {
+        if (obj.sprite !== undefined && obj.tileArr !== undefined && obj.tilesetData !== undefined) {
+          const objWidth = Math.floor(obj.width / obj.tilesetData.tilewidth)
+          const col = (num - 1) % (obj.tilesetData.columns)
+          const row = Math.floor((num - 1) / obj.tilesetData.columns)
+
+          const treeCol = (i) % (objWidth)
+          const treeRow = Math.floor(i / objWidth)
+
+          ctx.drawImage(
+            obj.sprite,
+            col * obj.tilesetData.tilewidth,
+            row * obj.tilesetData.tileheight,
+            obj.tilesetData.tilewidth,
+            obj.tilesetData.tileheight,
+            obj.x + (treeCol * obj.tilesetData.tilewidth),
+            obj.y + (treeRow * obj.tilesetData.tileheight),
+            obj.tilesetData.tilewidth,
+            obj.tilesetData.tileheight,
+          )
+        }
+      })
+      break
   }
 }

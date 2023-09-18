@@ -23,7 +23,7 @@ interface factoryInput {
   collisions?: Collisions | boolean
 
   tileRow?: number
-  tileNum?: number
+  tileArr?: number[]
   tilesetData?: TileSet
 }
 export function gameObjectFactory(obj: factoryInput): gameObject {
@@ -68,7 +68,7 @@ export function gameObjectFactory(obj: factoryInput): gameObject {
     shape: obj.shape ? obj.shape : "rectangle",
     sprite: image.src ? image : undefined,
     collisions: collisions,
-    tileNum: obj.tileNum !== undefined ? obj.tileNum : undefined,
+    tileArr: obj.tileArr !== undefined ? obj.tileArr : undefined,
     tilesetData: obj.tilesetData !== undefined ? obj.tilesetData : undefined,
     velocity: { x: 0, y: 0 },
     tileRow: obj.tileRow !== undefined ? obj.tileRow : undefined,

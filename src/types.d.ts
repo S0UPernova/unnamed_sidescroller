@@ -21,7 +21,7 @@ type gameObject = {
   cycleType?: CycleType
   tileRow?: number
   sprite: HTMLImageElement | undefined
-  tileNum?: number
+  tileArr?: number[]
   tilesetData?: TileSet
 }
 type CycleType = "circular" | "reversing"
@@ -77,7 +77,7 @@ type gameObjectActions = {
 
 type hexString = `#${string}`
 
-type Shape = "ellipse" | "rectangle" | "sprite"
+type Shape = "ellipse" | "rectangle" | "sprite" | "tileArr"
 
 type TileSet = {
   "columns": number,
@@ -95,7 +95,7 @@ type TileSet = {
 
 type WhereIs = "backgound" | "midground" | "foreground"
 
-type LayerProps = {
+type CustomProps = {
   "name": string
   "type": string
   "value": string | boolean | number
@@ -110,22 +110,23 @@ type LayerObject = {
   "visible": boolean,
   "width": number,
   "x": number,
-  "y": number
+  "y": number,
+  "properties"?: CustomProps[]
 }
 
 type LevelLayer = {
   "class"?: string
-  "data": number[],
-  "height": number,
+  "data"?: number[],
+  "height"?: number,
   "id": number,
   "name": string,
   "opacity": number,
   "type": string,
   "visible": boolean,
-  "width": number,
+  "width"?: number,
   "x": number,
   "y": number,
-  "properties"?: LayerProps[]
+  "properties"?: CustomProps[]
   "objects"?: LayerObject[]
 }
 
