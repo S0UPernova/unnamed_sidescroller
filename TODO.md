@@ -6,9 +6,12 @@
 - Make moving platforms come from tiled (done, maybe not well, but done)
 - Add layers from tiled as in trees in front of player should block the player (done)
 - Add documentations for how to use tiled with this (done-ish)
+- Add player sprite and animations via sprite sheet (sort of)
 
 
 - Add level maker function (needs work still)
+- Modularize the sprite animation so that the draw will run the animation for the current action
+- clean up sprite and animated stuff asap
 - Maybe allow player to traverse between layers to allow different movement options
 - Make player start come from tiled
     - 
@@ -25,6 +28,5 @@
 - Add enemies
 - Add enemy "AI"
 
-- Add player sprite and animations via sprite sheet
 - Add to sprite type all that is needed for sprite animations
 - Mabe add compose option for gameObjects to be of multiple blocks and colors that move in relation to each other maybe make it an array that sets the x and y relative to obj.x and obj.y 

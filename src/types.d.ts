@@ -1,6 +1,6 @@
 import { BlobOptions } from "buffer"
 import { ExecFileOptionsWithStringEncoding } from "child_process"
-import { Sprite } from "./components/game/sprites"
+import { Characters, Sprite } from "./components/game/sprites"
 
 // todo make separate dynamic gameObject
 type gameObject = {
@@ -12,6 +12,8 @@ type gameObject = {
   color?: hexString
   shape: Shape
   collisions: Collisions
+  lastDirRight: boolean
+  
 
   moveSpeed: number
   velocity: { x: number, y: number },
@@ -20,11 +22,26 @@ type gameObject = {
   cycleDirForward?: boolean
   cycleType?: CycleType
   tileRow?: number
-  sprite: HTMLImageElement | undefined
+  sprite: AnimatedSprite | undefined
+  currentAnimation?: AnimatedSprite
+  idleAnimation?:  AnimatedSprite
+  animations?: CharacterAnimationMap
+  actionToAnimationMap?: ActionToAnimationMap
   tileArr?: number[]
   tilesetData?: TileSet
 }
+
 type CycleType = "circular" | "reversing"
+
+
+type CharacterAnimationMap = {
+  idle: AnimatedSprite,
+  run: AnimatedSprite
+}
+type keys = keyof typeof CharacterActionMap
+// type ActionToAnimationMap = {
+//   [key: (keys | string)]: keyof WarewolfAnimationMap
+// }
 
 type Camera = {
   x: number
@@ -44,6 +61,18 @@ type CharacterObject = gameObject & {
   jumpForce?: number
   gravityMultiplier?: number
 
+}
+
+type AnimatedSprite = {
+  frames: number
+  framesPerSecond: number
+  timeSinceLastFrameUpdate?: number
+  currentFrame?: number
+  image: HTMLImageElement
+}
+
+type ActionToAnimationMap = {
+  [key: CharacterActions]: keyof CharacterAnimationMap
 }
 
 type Collisions = {
@@ -77,7 +106,7 @@ type gameObjectActions = {
 
 type hexString = `#${string}`
 
-type Shape = "ellipse" | "rectangle" | "sprite" | "tileArr"
+type Shape = "ellipse" | "rectangle" | "sprite" | "tileArr" | "animated"
 
 type TileSet = {
   "columns": number,

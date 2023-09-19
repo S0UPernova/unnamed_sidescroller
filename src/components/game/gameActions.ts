@@ -3,6 +3,7 @@ import { CharacterObject, gameObject, vec2d } from "../../types"
 export function moveRight(obj: CharacterObject, keyDown: boolean) {
   if (keyDown && obj.velocity.x >= 0) {
     obj.velocity.x = obj.moveSpeed
+    obj.lastDirRight = true
   }
   else if (keyDown) {
     obj.velocity.x = 0
@@ -15,6 +16,7 @@ export function moveRight(obj: CharacterObject, keyDown: boolean) {
 export function moveLeft(obj: CharacterObject, keyDown: boolean) {
   if (keyDown && obj.velocity.x <= 0) {
     obj.velocity.x = -obj.moveSpeed
+    obj.lastDirRight = false
   }
   else if (keyDown) {
     obj.velocity.x = 0

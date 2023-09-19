@@ -1,9 +1,11 @@
+import { time } from "console"
+import { run } from "node:test"
 import { gameObject } from "../../types"
 import { levelInit } from "./initLevel"
 import { tileset } from "./sprites"
 
 
-export function draw(ctx: CanvasRenderingContext2D, obj: gameObject): void {
+export function draw(ctx: CanvasRenderingContext2D, obj: gameObject, delta?: number): void {
   switch (obj.shape) {
     case "ellipse": {
       ctx.beginPath()
@@ -21,7 +23,7 @@ export function draw(ctx: CanvasRenderingContext2D, obj: gameObject): void {
       if (obj.sprite !== undefined) {
         if (obj.tilesetData === undefined || obj.tileArr === undefined) {
           ctx.drawImage(
-            obj.sprite,
+            obj.sprite.image,
             obj.x,
             obj.y,
             obj.width,
@@ -35,7 +37,7 @@ export function draw(ctx: CanvasRenderingContext2D, obj: gameObject): void {
           const row = Math.floor((obj.tileArr[0] - 1) / obj.tilesetData?.columns)
 
           ctx.drawImage(
-            obj.sprite,
+            obj.sprite.image,
             col * obj.tilesetData.tilewidth,
             row * obj.tilesetData.tileheight,
             obj.tilesetData.tilewidth,
@@ -59,7 +61,7 @@ export function draw(ctx: CanvasRenderingContext2D, obj: gameObject): void {
           const treeRow = Math.floor(i / objWidth)
 
           ctx.drawImage(
-            obj.sprite,
+            obj.sprite.image,
             col * obj.tilesetData.tilewidth,
             row * obj.tilesetData.tileheight,
             obj.tilesetData.tilewidth,
@@ -71,6 +73,59 @@ export function draw(ctx: CanvasRenderingContext2D, obj: gameObject): void {
           )
         }
       })
+      break
+    case "animated":
+      
+      if (obj.idleAnimation !== undefined && obj.actionToAnimationMap !== undefined && obj.animations !== undefined) {
+        if (obj.velocity.x !== 0) {
+          obj.currentAnimation = obj.animations["run"]
+        }
+        else {
+          obj.currentAnimation = obj.idleAnimation
+        }
+        // if (obj.tilesetData === undefined || obj.tileArr === undefined) {
+        if (obj.currentAnimation.timeSinceLastFrameUpdate === undefined) obj.currentAnimation.timeSinceLastFrameUpdate = 0
+        if (obj.currentAnimation.currentFrame === undefined) obj.currentAnimation.currentFrame = 0
+        if (delta) {
+          obj.currentAnimation.timeSinceLastFrameUpdate += delta
+        }
+        const threshold = 1000 / obj.currentAnimation.framesPerSecond
+        const timeElapsed = obj.currentAnimation.timeSinceLastFrameUpdate
+        if (timeElapsed >= threshold) {
+          obj.currentAnimation.currentFrame + 1 >= obj.currentAnimation.frames ? obj.currentAnimation.currentFrame = 0 : obj.currentAnimation.currentFrame++
+          obj.currentAnimation.timeSinceLastFrameUpdate = 0
+        }
+        // const offset =  > threshold
+        if (obj.lastDirRight === false) {
+          ctx.save()
+          ctx.scale(-1, 1)
+          ctx.drawImage(
+            obj.currentAnimation.image,
+            (obj.currentAnimation.image.width / obj.currentAnimation.frames) * obj.currentAnimation.currentFrame,
+            0,
+            obj.currentAnimation.image.width / obj.currentAnimation.frames,
+            obj.currentAnimation.image.height,
+            -obj.x - obj.width,
+            obj.y,
+            obj.width,
+            obj.height,
+          )
+          ctx.restore()
+        }
+        else if (obj.currentAnimation.image){
+          ctx.drawImage(
+            obj.currentAnimation.image,
+            (obj.currentAnimation.image.width / obj.currentAnimation.frames) * obj.currentAnimation.currentFrame,
+            0,
+            obj.currentAnimation.image.width / obj.currentAnimation.frames,
+            obj.currentAnimation.image.height,
+            obj.x,
+            obj.y,
+            obj.width,
+            obj.height,
+          )
+        }
+      }
       break
   }
 }

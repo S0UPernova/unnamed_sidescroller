@@ -1,5 +1,5 @@
 // import imgUrl from "../../assets/sprite.svg"
-import { CharacterObject, Collisions, CycleType, gameObject, hexString, Shape, TileSet, vec2d } from "../../types"
+import { AnimatedSprite, CharacterObject, Collisions, CycleType, gameObject, hexString, Shape, TileSet, vec2d } from "../../types"
 import * as sprites from "./sprites"
 
 interface factoryInput {
@@ -8,16 +8,16 @@ interface factoryInput {
   y: number
   height: number
   width: number,
-  shape?: Shape
-  sprite?: sprites.Sprite
+  shape?: Shape,
+  sprite?: sprites.Sprite,
   color?: hexString
   jumpForce?: number // todo refactor this out
   weight?: number
-  
+  character?: keyof typeof sprites.Characters
   positions?: vec2d[]
 
   cycleType?: CycleType
-  
+
   // make these part of a different Object type
   moveSpeed?: number
   collisions?: Collisions | boolean
@@ -27,11 +27,30 @@ interface factoryInput {
   tilesetData?: TileSet
 }
 export function gameObjectFactory(obj: factoryInput): gameObject {
-  const image: HTMLImageElement = new Image(obj.width, obj.width);
-  if (obj.sprite) {
+  const image: HTMLImageElement = new Image();
+  if (obj?.sprite) {
     image.src = sprites[obj.sprite]
+  } 
+  // let image: HTMLImageElement | undefined
+  // if (obj.sprite !== undefined) {
+  //   image = sprites.returnImage(obj.sprite)
+  // }
+  // else {
+  //   image = undefined
+  // }
+
+  let animatedSprite: AnimatedSprite | undefined
+  if (image !== undefined) {
+    animatedSprite = {
+      currentFrame: 0,
+      frames: 1,//obj.sprite?.frames !== undefined ? obj.sprite.frames : 1,
+      framesPerSecond: 1,//obj.sprite?.framesPerSecond !== undefined ? obj.sprite.framesPerSecond : 1,
+      image: image,
+      timeSinceLastFrameUpdate: 0
+    }
   }
-  let collisions: Collisions
+  // }
+  let collisions: Collisions;
 
   if (obj.collisions === true || obj.collisions === undefined) {
     collisions = {
@@ -66,7 +85,10 @@ export function gameObjectFactory(obj: factoryInput): gameObject {
     width: obj.width,
     color: obj?.color ? obj.color : undefined,
     shape: obj.shape ? obj.shape : "rectangle",
-    sprite: image.src ? image : undefined,
+    sprite: image?.src ? animatedSprite : undefined,
+    idleAnimation: obj.character !== undefined ? sprites.Characters[obj.character].animationMap.idle : undefined,
+    animations: obj.character !== undefined ? {...sprites.Characters[obj.character].animationMap} : undefined,
+    actionToAnimationMap: obj.character !== undefined ? {...sprites.Characters[obj.character].actionToAnimationMap} : undefined,
     collisions: collisions,
     tileArr: obj.tileArr !== undefined ? obj.tileArr : undefined,
     tilesetData: obj.tilesetData !== undefined ? obj.tilesetData : undefined,
@@ -76,18 +98,18 @@ export function gameObjectFactory(obj: factoryInput): gameObject {
     weight: obj.weight ? obj.weight : 1,
     positions: obj.positions ? [...obj.positions] : undefined,
     positionInCycle: 0,
+    lastDirRight: true,
     cycleType: obj.cycleType ? obj.cycleType : "circular"
   }
 }
-
 // todo make this more useful
 export function characterObjectFactory(obj: factoryInput): CharacterObject {
   const character: CharacterObject = {
     ...gameObjectFactory(obj),
-  gravityMultiplier: undefined,
-  weight: obj.weight ? obj.weight : .25,
-  jumpForce: obj.jumpForce ? obj.jumpForce : 3
-}
+    gravityMultiplier: undefined,
+    weight: obj.weight ? obj.weight : .25,
+    jumpForce: obj.jumpForce ? obj.jumpForce : 3
+  }
 
   return character
 }

@@ -2,7 +2,7 @@ import { timingSafeEqual } from 'crypto'
 import { Camera, CharacterObject, Collisions, CycleType, gameObject, hexString, LayerObject, CustomProps, LevelBounds, LevelJson, LevelLayer, TileSet, vec2d, WhereIs } from '../../types'
 import { characterObjectFactory, gameObjectFactory } from './factories'
 import * as level1 from './levels/level1.json'
-import { Sprite, tileset } from './sprites'
+import { Sprite, tileset, warewolf, WarewolfSprites } from './sprites'
 
 export interface LevelInitReturn {
   tiles: gameObject[]
@@ -34,7 +34,7 @@ export function levelInit(levelNumber: number, canvasHeight: number, canvasWidth
     width: canvasWidth,
   }
 
-  const player = characterObjectFactory({ x: (bounds.x2 / 2) - 50, y: bounds.y1 + 50, height: 60, width: 60, shape: "sprite", sprite: "sprite", moveSpeed: 1, jumpForce: 3, weight: 0.5 })
+  const player = characterObjectFactory({ x: (bounds.x2 / 2) - 50, y: bounds.y1 + 50, height: 60, width: 60, shape: "animated", character: "warewolf",  moveSpeed: 1, jumpForce: 3, weight: 0.5 })
 
   return {
     tiles: tiles,

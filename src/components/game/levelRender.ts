@@ -37,7 +37,7 @@ export function levelRender(context: CanvasRenderingContext2D, delta: number, le
     context.scale(.25, .25)
   }
 
-  draw(context, levelData.player)
+  draw(context, levelData.player, delta)
   drawAfterPlayer.forEach(obj => {
     draw(context, obj)
   })
