@@ -15,6 +15,9 @@ export function moveRight(obj: CharacterObject, keyDown: boolean) {
     obj.currentAnimation = "idle"
 
   }
+  else if (!keyDown){
+    obj.currentAnimation = "idle"
+  }
 }
 
 export function moveLeft(obj: CharacterObject, keyDown: boolean) {
@@ -31,7 +34,9 @@ export function moveLeft(obj: CharacterObject, keyDown: boolean) {
   if (!keyDown && obj.velocity.x < 0) {
     obj.velocity.x = 0
     obj.currentAnimation = "idle"
-
+  }
+  else if (!keyDown){
+    obj.currentAnimation = "idle"
   }
 }
 
