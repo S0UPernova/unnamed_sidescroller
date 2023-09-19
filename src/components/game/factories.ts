@@ -86,7 +86,7 @@ export function gameObjectFactory(obj: factoryInput): gameObject {
     color: obj?.color ? obj.color : undefined,
     shape: obj.shape ? obj.shape : "rectangle",
     sprite: image?.src ? animatedSprite : undefined,
-    idleAnimation: obj.character !== undefined ? sprites.Characters[obj.character].animationMap.idle : undefined,
+    idleAnimation: obj.character !== undefined ? {...sprites.Characters[obj.character].animationMap.idle} : undefined,
     animations: obj.character !== undefined ? {...sprites.Characters[obj.character].animationMap} : undefined,
     actionToAnimationMap: obj.character !== undefined ? {...sprites.Characters[obj.character].actionToAnimationMap} : undefined,
     collisions: collisions,
