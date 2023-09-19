@@ -21,21 +21,19 @@ export const WarewolfSprites: CharacterAnimationMap = {
     image: returnImage(wareIdle),
     frames: 8,
     framesPerSecond: 24,
+    currentFrame: 0,
+    timeSinceLastFrameUpdate: 0
   },
   run: {
     image: returnImage(wareRun),
     frames: 9,
     framesPerSecond: 24,
+    currentFrame: 0,
+    timeSinceLastFrameUpdate: 0
   }
 }
 
-export type Warewolf = {
-  animationMap: CharacterAnimationMap,
-  actionMap: typeof CharacterActionMap,
-  actionToAnimationMap: ActionToAnimationMap
-}
-
-export const warewolf: Warewolf = {
+export const warewolf  = {
   animationMap: WarewolfSprites,
   actionMap: CharacterActionMap,
   actionToAnimationMap: {
@@ -44,7 +42,7 @@ export const warewolf: Warewolf = {
     jump: "idle"
   }
 }
-export const Characters = {warewolf: warewolf}
+export const Characters = { warewolf: warewolf }
 // WarewolfSprites.idle
 // todo have this export AnimatedSprite type
 export {

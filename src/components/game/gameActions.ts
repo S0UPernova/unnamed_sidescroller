@@ -4,12 +4,16 @@ export function moveRight(obj: CharacterObject, keyDown: boolean) {
   if (keyDown && obj.velocity.x >= 0) {
     obj.velocity.x = obj.moveSpeed
     obj.lastDirRight = true
+    obj.currentAnimation = "run"
   }
   else if (keyDown) {
     obj.velocity.x = 0
+    obj.currentAnimation = "idle"
   }
   if (!keyDown && obj.velocity.x > 0) {
     obj.velocity.x = 0
+    obj.currentAnimation = "idle"
+
   }
 }
 
@@ -17,12 +21,17 @@ export function moveLeft(obj: CharacterObject, keyDown: boolean) {
   if (keyDown && obj.velocity.x <= 0) {
     obj.velocity.x = -obj.moveSpeed
     obj.lastDirRight = false
+    obj.currentAnimation = "run"
   }
   else if (keyDown) {
     obj.velocity.x = 0
+    obj.currentAnimation = "idle"
+
   }
   if (!keyDown && obj.velocity.x < 0) {
     obj.velocity.x = 0
+    obj.currentAnimation = "idle"
+
   }
 }
 
@@ -42,6 +51,7 @@ export function crouch(obj: CharacterObject, keyDown: boolean) {
 export function stopX(obj: gameObject) {
   // not sure if this is needed, bud I want a export function for when both buttons are pressed
   obj.velocity.x = 0
+  obj.currentAnimation = "idle"
 }
 
 export function stopY(obj: gameObject) {

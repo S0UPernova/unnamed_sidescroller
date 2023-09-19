@@ -75,36 +75,28 @@ export function draw(ctx: CanvasRenderingContext2D, obj: gameObject, delta?: num
       })
       break
     case "animated":
-      
-      if (obj.idleAnimation !== undefined && obj.actionToAnimationMap !== undefined && obj.animations !== undefined) {
-        if (obj.velocity.x !== 0) {
-          obj.currentAnimation = obj.animations["run"]
-        }
-        else {
-          obj.currentAnimation = obj.idleAnimation
-        }
-        // if (obj.tilesetData === undefined || obj.tileArr === undefined) {
-        if (obj.currentAnimation.timeSinceLastFrameUpdate === undefined) obj.currentAnimation.timeSinceLastFrameUpdate = 0
-        if (obj.currentAnimation.currentFrame === undefined) obj.currentAnimation.currentFrame = 0
-        if (delta) {
-          obj.currentAnimation.timeSinceLastFrameUpdate += delta
-        }
-        const threshold = 1000 / obj.currentAnimation.framesPerSecond
-        const timeElapsed = obj.currentAnimation.timeSinceLastFrameUpdate
-        if (timeElapsed >= threshold) {
-          obj.currentAnimation.currentFrame + 1 >= obj.currentAnimation.frames ? obj.currentAnimation.currentFrame = 0 : obj.currentAnimation.currentFrame++
-          obj.currentAnimation.timeSinceLastFrameUpdate = 0
+      if (obj.currentAnimation !== undefined && obj.actionToAnimationMap !== undefined && obj.animations !== undefined && obj?.animations?.[obj.currentAnimation] !== undefined) {
+          if (obj.animations[obj.currentAnimation].timeSinceLastFrameUpdate === undefined || obj.animations[obj.currentAnimation].timeSinceLastFrameUpdate < 0) obj.animations[obj.currentAnimation].timeSinceLastFrameUpdate = 0
+          if (obj.animations[obj.currentAnimation].currentFrame === undefined) obj.animations[obj.currentAnimation].currentFrame = 0
+          if (delta) {
+            obj.animations[obj.currentAnimation].timeSinceLastFrameUpdate += delta
+          }
+          const threshold = 1000 / obj.animations[obj.currentAnimation].framesPerSecond
+          const timeElapsed = obj.animations[obj.currentAnimation].timeSinceLastFrameUpdate
+          if (timeElapsed >= threshold) {
+          obj.animations[obj.currentAnimation].currentFrame + 1 >= obj.animations[obj.currentAnimation].frames ? obj.animations[obj.currentAnimation].currentFrame = 0 : obj.animations[obj.currentAnimation].currentFrame++
+          obj.animations[obj.currentAnimation].timeSinceLastFrameUpdate = 0
         }
         // const offset =  > threshold
         if (obj.lastDirRight === false) {
           ctx.save()
           ctx.scale(-1, 1)
           ctx.drawImage(
-            obj.currentAnimation.image,
-            (obj.currentAnimation.image.width / obj.currentAnimation.frames) * obj.currentAnimation.currentFrame,
+            obj.animations[obj.currentAnimation].image,
+            (obj.animations[obj.currentAnimation].image.width / obj.animations[obj.currentAnimation].frames) * obj.animations[obj.currentAnimation].currentFrame,
             0,
-            obj.currentAnimation.image.width / obj.currentAnimation.frames,
-            obj.currentAnimation.image.height,
+            obj.animations[obj.currentAnimation].image.width / obj.animations[obj.currentAnimation].frames,
+            obj.animations[obj.currentAnimation].image.height,
             -obj.x - obj.width,
             obj.y,
             obj.width,
@@ -112,13 +104,13 @@ export function draw(ctx: CanvasRenderingContext2D, obj: gameObject, delta?: num
           )
           ctx.restore()
         }
-        else if (obj.currentAnimation.image){
+        else if (obj.animations[obj.currentAnimation].image){
           ctx.drawImage(
-            obj.currentAnimation.image,
-            (obj.currentAnimation.image.width / obj.currentAnimation.frames) * obj.currentAnimation.currentFrame,
+            obj.animations[obj.currentAnimation].image,
+            (obj.animations[obj.currentAnimation].image.width / obj.animations[obj.currentAnimation].frames) * obj.animations[obj.currentAnimation].currentFrame,
             0,
-            obj.currentAnimation.image.width / obj.currentAnimation.frames,
-            obj.currentAnimation.image.height,
+            obj.animations[obj.currentAnimation].image.width / obj.animations[obj.currentAnimation].frames,
+            obj.animations[obj.currentAnimation].image.height,
             obj.x,
             obj.y,
             obj.width,

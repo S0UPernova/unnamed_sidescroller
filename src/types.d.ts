@@ -23,7 +23,7 @@ type gameObject = {
   cycleType?: CycleType
   tileRow?: number
   sprite: AnimatedSprite | undefined
-  currentAnimation?: AnimatedSprite
+  currentAnimation?: keyof CharacterAnimationMap
   idleAnimation?:  AnimatedSprite
   animations?: CharacterAnimationMap
   actionToAnimationMap?: ActionToAnimationMap
@@ -66,8 +66,8 @@ type CharacterObject = gameObject & {
 type AnimatedSprite = {
   frames: number
   framesPerSecond: number
-  timeSinceLastFrameUpdate?: number
-  currentFrame?: number
+  timeSinceLastFrameUpdate: number
+  currentFrame: number
   image: HTMLImageElement
 }
 
