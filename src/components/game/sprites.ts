@@ -2,8 +2,9 @@ import sprite from "../../assets/sprite.svg"
 import tileset from "../game/levels/tileset.png"
 import wareIdle from "../../assets/warewolf/Idle.png"
 import wareRun from "../../assets/warewolf/Run.png"
+import wareJump from "../../assets/warewolf/Jump.png"
 import { ActionToAnimationMap, AnimatedSprite, CharacterAction, CharacterActions, CharacterAnimationMap } from "../../types"
-import { CharacterActionMap, moveLeft } from "./gameActions"
+import { CharacterActionMap, jump, moveLeft } from "./gameActions"
 
 // todo refactor animated ones from here
 export type Sprite = (
@@ -22,15 +23,25 @@ export const WarewolfSprites: CharacterAnimationMap = {
     frames: 8,
     framesPerSecond: 24,
     currentFrame: 0,
-    timeSinceLastFrameUpdate: 0
+    timeSinceLastFrameUpdate: 0,
+    loopAnimation: true
   },
   run: {
     image: returnImage(wareRun),
     frames: 9,
     framesPerSecond: 24,
     currentFrame: 0,
-    timeSinceLastFrameUpdate: 0
-  }
+    timeSinceLastFrameUpdate: 0,
+    loopAnimation: true
+  },
+  jump: {
+    image: returnImage(wareJump),
+    frames: 11,
+    framesPerSecond: 24,
+    currentFrame: 0,
+    timeSinceLastFrameUpdate: 0,
+    loopAnimation: false
+  },
 }
 
 export const warewolf  = {

@@ -75,49 +75,58 @@ export function draw(ctx: CanvasRenderingContext2D, obj: gameObject, delta?: num
       })
       break
     case "animated":
-      if (obj.currentAnimation !== undefined && obj.actionToAnimationMap !== undefined && obj.animations !== undefined && obj?.animations?.[obj.currentAnimation] !== undefined) {
-          if (obj.animations[obj.currentAnimation].timeSinceLastFrameUpdate === undefined || obj.animations[obj.currentAnimation].timeSinceLastFrameUpdate < 0) obj.animations[obj.currentAnimation].timeSinceLastFrameUpdate = 0
-          if (obj.animations[obj.currentAnimation].currentFrame === undefined) obj.animations[obj.currentAnimation].currentFrame = 0
-          if (delta) {
-            obj.animations[obj.currentAnimation].timeSinceLastFrameUpdate += delta
-          }
-          const threshold = 1000 / obj.animations[obj.currentAnimation].framesPerSecond
-          const timeElapsed = obj.animations[obj.currentAnimation].timeSinceLastFrameUpdate
-          if (timeElapsed >= threshold) {
-          obj.animations[obj.currentAnimation].currentFrame + 1 >= obj.animations[obj.currentAnimation].frames ? obj.animations[obj.currentAnimation].currentFrame = 0 : obj.animations[obj.currentAnimation].currentFrame++
-          obj.animations[obj.currentAnimation].timeSinceLastFrameUpdate = 0
-        }
-        // const offset =  > threshold
-        if (obj.lastDirRight === false) {
-          ctx.save()
-          ctx.scale(-1, 1)
-          ctx.drawImage(
-            obj.animations[obj.currentAnimation].image,
-            (obj.animations[obj.currentAnimation].image.width / obj.animations[obj.currentAnimation].frames) * obj.animations[obj.currentAnimation].currentFrame,
-            0,
-            obj.animations[obj.currentAnimation].image.width / obj.animations[obj.currentAnimation].frames,
-            obj.animations[obj.currentAnimation].image.height,
-            -obj.x - obj.width,
-            obj.y,
-            obj.width,
-            obj.height,
-          )
-          ctx.restore()
-        }
-        else if (obj.animations[obj.currentAnimation].image){
-          ctx.drawImage(
-            obj.animations[obj.currentAnimation].image,
-            (obj.animations[obj.currentAnimation].image.width / obj.animations[obj.currentAnimation].frames) * obj.animations[obj.currentAnimation].currentFrame,
-            0,
-            obj.animations[obj.currentAnimation].image.width / obj.animations[obj.currentAnimation].frames,
-            obj.animations[obj.currentAnimation].image.height,
-            obj.x,
-            obj.y,
-            obj.width,
-            obj.height,
-          )
-        }
-      }
+      drawAnimatedSprite(ctx, obj, delta)
       break
+  }
+}
+
+function drawAnimatedSprite(ctx: CanvasRenderingContext2D, obj: gameObject, delta: number) {
+  if (obj.currentAnimation !== undefined && obj.actionToAnimationMap !== undefined && obj.animations !== undefined && obj?.animations?.[obj.currentAnimation] !== undefined) {
+    if (obj.velocity.y === 0 && obj.velocity.x === 0 && obj.currentAnimation === "jump") {
+      obj.currentAnimation = "idle"
+    }
+    const currentAnimation = obj.animations[obj.currentAnimation]
+    if (currentAnimation.timeSinceLastFrameUpdate === undefined || currentAnimation.timeSinceLastFrameUpdate < 0) currentAnimation.timeSinceLastFrameUpdate = 0
+    if (currentAnimation.currentFrame === undefined) currentAnimation.currentFrame = 0
+    if (delta) {
+      currentAnimation.timeSinceLastFrameUpdate += delta
+    }
+    const threshold = 1000 / currentAnimation.framesPerSecond
+    const timeElapsed = currentAnimation.timeSinceLastFrameUpdate
+    if (timeElapsed >= threshold) {
+      const nextFrameAtEnd = currentAnimation.loopAnimation ? 0 : currentAnimation.frames - 1
+      currentAnimation.currentFrame + 1 >= currentAnimation.frames ? currentAnimation.currentFrame = nextFrameAtEnd : currentAnimation.currentFrame++
+      currentAnimation.timeSinceLastFrameUpdate = 0
+    }
+    // const offset =  > threshold
+    if (obj.lastDirRight === false) {
+      ctx.save()
+      ctx.scale(-1, 1)
+      ctx.drawImage(
+        currentAnimation.image,
+        (currentAnimation.image.width / currentAnimation.frames) * currentAnimation.currentFrame,
+        0,
+        currentAnimation.image.width / currentAnimation.frames,
+        currentAnimation.image.height,
+        -obj.x - obj.width,
+        obj.y,
+        obj.width,
+        obj.height,
+      )
+      ctx.restore()
+    }
+    else if (currentAnimation.image) {
+      ctx.drawImage(
+        currentAnimation.image,
+        (currentAnimation.image.width / currentAnimation.frames) * currentAnimation.currentFrame,
+        0,
+        currentAnimation.image.width / currentAnimation.frames,
+        currentAnimation.image.height,
+        obj.x,
+        obj.y,
+        obj.width,
+        obj.height,
+      )
+    }
   }
 }

@@ -4,19 +4,27 @@ export function moveRight(obj: CharacterObject, keyDown: boolean) {
   if (keyDown && obj.velocity.x >= 0) {
     obj.velocity.x = obj.moveSpeed
     obj.lastDirRight = true
-    obj.currentAnimation = "run"
+    if (obj.currentAnimation !== "jump" || obj.velocity.y === 0) {
+      obj.currentAnimation = "run"
+    }
   }
   else if (keyDown) {
     obj.velocity.x = 0
-    obj.currentAnimation = "idle"
+    if (obj.currentAnimation !== "jump" || obj.velocity.y === 0) {
+      obj.currentAnimation = "idle"
+    }
   }
   if (!keyDown && obj.velocity.x > 0) {
     obj.velocity.x = 0
-    obj.currentAnimation = "idle"
+    if (obj.currentAnimation !== "jump" || obj.velocity.y === 0) {
+      obj.currentAnimation = "idle"
+    }
 
   }
-  else if (!keyDown){
-    obj.currentAnimation = "idle"
+  else if (!keyDown) {
+    if (obj.currentAnimation !== "jump" || obj.velocity.y === 0) {
+      obj.currentAnimation = "idle"
+    }
   }
 }
 
@@ -24,25 +32,36 @@ export function moveLeft(obj: CharacterObject, keyDown: boolean) {
   if (keyDown && obj.velocity.x <= 0) {
     obj.velocity.x = -obj.moveSpeed
     obj.lastDirRight = false
-    obj.currentAnimation = "run"
+    if (obj.currentAnimation !== "jump" || obj.velocity.y === 0) {
+      obj.currentAnimation = "run"
+    }
   }
   else if (keyDown) {
     obj.velocity.x = 0
-    obj.currentAnimation = "idle"
+    if (obj.currentAnimation !== "jump" || obj.velocity.y === 0) {
+      obj.currentAnimation = "idle"
+    }
 
   }
   if (!keyDown && obj.velocity.x < 0) {
     obj.velocity.x = 0
-    obj.currentAnimation = "idle"
+    if (obj.currentAnimation !== "jump" || obj.velocity.y === 0) {
+      obj.currentAnimation = "idle"
+    }
   }
-  else if (!keyDown){
-    obj.currentAnimation = "idle"
+  else if (!keyDown) {
+    if (obj.currentAnimation !== "jump" || obj.velocity.y === 0) {
+      obj.currentAnimation = "idle"
+    }
   }
 }
 
 export function jump(obj: CharacterObject, keyDown: boolean) {
   if (keyDown && obj.velocity.y === 0) {
     obj.velocity.y = obj.jumpForce !== undefined ? -obj.jumpForce : -3
+    obj.currentAnimation = "jump"
+    if (obj.animations)
+      obj.animations.jump.currentFrame = 0
   }
   if (!keyDown && obj.velocity.y < 0) {
     obj.velocity.y = 0.00001
@@ -56,7 +75,9 @@ export function crouch(obj: CharacterObject, keyDown: boolean) {
 export function stopX(obj: gameObject) {
   // not sure if this is needed, bud I want a export function for when both buttons are pressed
   obj.velocity.x = 0
-  obj.currentAnimation = "idle"
+  if (obj.currentAnimation !== "jump" || obj.velocity.y === 0) {
+    obj.currentAnimation = "idle"
+  }
 }
 
 export function stopY(obj: gameObject) {
@@ -113,7 +134,7 @@ export function cycleThroughPositions(obj: gameObject): void {
 
     }
     else if (!obj.cycleDirForward) {
-      if (currentPos -1 < 0) {
+      if (currentPos - 1 < 0) {
         obj.cycleDirForward = true
         nextPos = currentPos + 1 > posList.length ? currentPos + 1 : 0
       }
@@ -128,15 +149,15 @@ export function cycleThroughPositions(obj: gameObject): void {
     // nextPos = currentPos + 1 < posList.length ? currentPos + 1 : 0
   }
   else {
-  nextPos = 0
-}
+    nextPos = 0
+  }
 
 
-const inPosition: boolean = moveTo(obj, posList[nextPos], 5)
+  const inPosition: boolean = moveTo(obj, posList[nextPos], 5)
 
-if (inPosition) {
-  obj.positionInCycle = nextPos
-}
+  if (inPosition) {
+    obj.positionInCycle = nextPos
+  }
   // return inPosition ? nextPos : currentPos
 }
 

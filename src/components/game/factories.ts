@@ -46,7 +46,8 @@ export function gameObjectFactory(obj: factoryInput): gameObject {
       frames: 1,//obj.sprite?.frames !== undefined ? obj.sprite.frames : 1,
       framesPerSecond: 1,//obj.sprite?.framesPerSecond !== undefined ? obj.sprite.framesPerSecond : 1,
       image: image,
-      timeSinceLastFrameUpdate: 0
+      timeSinceLastFrameUpdate: 0,
+      loopAnimation: false
     }
   }
   // }

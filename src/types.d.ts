@@ -2,33 +2,44 @@ import { BlobOptions } from "buffer"
 import { ExecFileOptionsWithStringEncoding } from "child_process"
 import { Characters, Sprite } from "./components/game/sprites"
 
+
+// todo get functions to take the simplest one possible
 // todo make separate dynamic gameObject
-type gameObject = {
+type gameObject  =  dynamicObject & tileObject & AnimatedObject
+
+type tileObject = dynamicObject & {
+  tileArr?: number[]
+  tilesetData?: TileSet
+  tileRow?: number
+}
+
+type AnimatedObject = dynamicObject & {
+  lastDirRight: boolean
+  sprite: AnimatedSprite | undefined
+  currentAnimation?: keyof CharacterAnimationMap
+  idleAnimation?:  AnimatedSprite
+  animations?: CharacterAnimationMap
+  actionToAnimationMap?: ActionToAnimationMap
+}
+
+type staticObject = {
   x: number,
   y: number,
   width: number,
   height: number,
-  weight?: number
-  color?: hexString
+  color?: hexString,
+  collisions: Collisions,
   shape: Shape
-  collisions: Collisions
-  lastDirRight: boolean
-  
+}
 
+type dynamicObject = staticObject & {
+  weight?: number
   moveSpeed: number
   velocity: { x: number, y: number },
   positionInCycle?: number
   positions?: vec2d[]
   cycleDirForward?: boolean
   cycleType?: CycleType
-  tileRow?: number
-  sprite: AnimatedSprite | undefined
-  currentAnimation?: keyof CharacterAnimationMap
-  idleAnimation?:  AnimatedSprite
-  animations?: CharacterAnimationMap
-  actionToAnimationMap?: ActionToAnimationMap
-  tileArr?: number[]
-  tilesetData?: TileSet
 }
 
 type CycleType = "circular" | "reversing"
@@ -36,7 +47,8 @@ type CycleType = "circular" | "reversing"
 
 type CharacterAnimationMap = {
   idle: AnimatedSprite,
-  run: AnimatedSprite
+  run: AnimatedSprite,
+  jump: AnimatedSprite
 }
 type keys = keyof typeof CharacterActionMap
 // type ActionToAnimationMap = {
@@ -69,6 +81,7 @@ type AnimatedSprite = {
   timeSinceLastFrameUpdate: number
   currentFrame: number
   image: HTMLImageElement
+  loopAnimation: boolean
 }
 
 type ActionToAnimationMap = {
