@@ -7,14 +7,16 @@
 - Add layers from tiled as in trees in front of player should block the player (done)
 - Add documentations for how to use tiled with this (done-ish)
 - Add player sprite and animations via sprite sheet (sort of)
+- Abstract moving objects more so that the function to move the object and the hitbox and such is all in one place so that I don't have to change multiple places again (done)
+- Add separate collision boxes for characters separate from the height and width (done)
 
 
 - Add level maker function (needs work still)
-- Modularize the sprite animation so that the draw will run the animation for the current action
+- Modularize the sprite animation so that the draw will run the animation for the current action (mostly have it)
 - clean up sprite and animated stuff asap
 - Maybe allow player to traverse between layers to allow different movement options
 - Make player start come from tiled
-    - 
+- Add dev mode, that logs things, and maybe a console to effect the game and showing hitboxes and such
 
 
 

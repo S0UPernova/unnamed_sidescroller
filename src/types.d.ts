@@ -15,7 +15,8 @@ type tileObject = dynamicObject & {
 
 type AnimatedObject = dynamicObject & {
   lastDirRight: boolean
-  sprite: AnimatedSprite | undefined
+
+  sprite: AnimatedSprite | undefined // todo refactor to have this be the static image option
   currentAnimation?: keyof CharacterAnimationMap
   idleAnimation?:  AnimatedSprite
   animations?: CharacterAnimationMap
@@ -29,6 +30,7 @@ type staticObject = {
   height: number,
   color?: hexString,
   collisions: Collisions,
+  collisionBox: Bounds & {offset: vec2d, size: vec2d}
   shape: Shape
 }
 
@@ -40,6 +42,7 @@ type dynamicObject = staticObject & {
   positions?: vec2d[]
   cycleDirForward?: boolean
   cycleType?: CycleType
+  gravityMultiplier?: number
 }
 
 type CycleType = "circular" | "reversing"
@@ -62,7 +65,7 @@ type Camera = {
   width: number
 }
 
-type LevelBounds = {
+type Bounds = {
   x1: number
   y1: number
   x2: number
@@ -71,8 +74,6 @@ type LevelBounds = {
 
 type CharacterObject = gameObject & {
   jumpForce?: number
-  gravityMultiplier?: number
-
 }
 
 type AnimatedSprite = {

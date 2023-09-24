@@ -1,8 +1,8 @@
 import sprite from "../../assets/sprite.svg"
 import tileset from "../game/levels/tileset.png"
-import wareIdle from "../../assets/warewolf/Idle.png"
-import wareRun from "../../assets/warewolf/Run.png"
-import wareJump from "../../assets/warewolf/Jump.png"
+import wareIdle from "../../assets/werewolf/Idle.png"
+import wareRun from "../../assets/werewolf/Run.png"
+import wareJump from "../../assets/werewolf/Jump.png"
 import { ActionToAnimationMap, AnimatedSprite, CharacterAction, CharacterActions, CharacterAnimationMap } from "../../types"
 import { CharacterActionMap, jump, moveLeft } from "./gameActions"
 
@@ -17,7 +17,7 @@ export function returnImage(src: string): HTMLImageElement {
 }
 
 
-export const WarewolfSprites: CharacterAnimationMap = {
+export const WerewolfSprites: CharacterAnimationMap = {
   idle: {
     image: returnImage(wareIdle),
     frames: 8,
@@ -37,7 +37,7 @@ export const WarewolfSprites: CharacterAnimationMap = {
   jump: {
     image: returnImage(wareJump),
     frames: 11,
-    framesPerSecond: 24,
+    framesPerSecond: 12,
     currentFrame: 0,
     timeSinceLastFrameUpdate: 0,
     loopAnimation: false
@@ -45,7 +45,7 @@ export const WarewolfSprites: CharacterAnimationMap = {
 }
 
 export const warewolf  = {
-  animationMap: WarewolfSprites,
+  animationMap: WerewolfSprites,
   actionMap: CharacterActionMap,
   actionToAnimationMap: {
     moveRight: "run",

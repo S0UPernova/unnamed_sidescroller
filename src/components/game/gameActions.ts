@@ -1,4 +1,4 @@
-import { CharacterObject, gameObject, vec2d } from "../../types"
+import { CharacterObject, dynamicObject, gameObject, vec2d } from "../../types"
 
 export function moveRight(obj: CharacterObject, keyDown: boolean) {
   if (keyDown && obj.velocity.x >= 0) {
@@ -85,7 +85,7 @@ export function stopY(obj: gameObject) {
   obj.velocity.y = 0
 }
 
-export function moveTo(obj: gameObject, target: vec2d, margin: number): boolean {
+export function moveTo(obj: dynamicObject, target: vec2d, margin: number): boolean {
   const tx = target.x - obj.x
   const ty = target.y - obj.y
   if (Math.abs(tx) <= margin && Math.abs(ty) <= margin) return true
@@ -109,7 +109,7 @@ export function enableGravity(obj: CharacterObject, keyDown: boolean) {
  * @param {number} currentPos 
  * @returns {number} the current step in the cycle
  */
-export function cycleThroughPositions(obj: gameObject): void {
+export function cycleThroughPositions(obj: dynamicObject): void {
   if (!obj.positions) return
   if (obj.positionInCycle === undefined) return
   const posList = obj.positions

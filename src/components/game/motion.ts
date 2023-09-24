@@ -1,8 +1,8 @@
-import { Camera, CharacterObject, gameObject, LevelBounds } from '../../types'
+import { Camera, CharacterObject, dynamicObject, gameObject, Bounds, vec2d } from '../../types'
 import { checkBoundsCollision, checkObjectCollisions } from './collisions'
 import { cycleThroughPositions } from './gameActions'
 
-export function calcGravity(player: CharacterObject, delta: number) {
+export function calcGravity(player: dynamicObject, delta: number) {
   if (player.gravityMultiplier === undefined) return
   const gravity = 0.01
   const terminalVelocity = 1
@@ -10,18 +10,19 @@ export function calcGravity(player: CharacterObject, delta: number) {
   player.velocity.y = speed > terminalVelocity ? terminalVelocity : speed
 }
 
-export function calcMovement(obj: gameObject, delta: number) {
+export function calcMovement(obj: dynamicObject, delta: number) {
   // set initial values
   if (delta === 0) return
-  let newPos = {
-    x: obj.x + (obj.velocity.x * delta),
-    y: obj.y + (obj.velocity.y * delta)
-  }
-  obj.x = newPos.x
-  obj.y = newPos.y
+  // let newPos = {
+  //   x: obj.x + (obj.velocity.x * delta),
+  //   y: obj.y + (obj.velocity.y * delta)
+  // }
+  translateObjectByAmount(obj, {x: obj.velocity.x * delta, y: obj.velocity.y * delta})
+  // obj.x = newPos.x
+  // obj.y = newPos.y
 }
 
-export function makeThingsMove(player: CharacterObject, arr: (gameObject)[], delta: number, bounds: LevelBounds) {
+export function makeThingsMove(player: CharacterObject, arr: (dynamicObject)[], delta: number, bounds: Bounds) {
   arr.forEach(obj => {
     // const restOfArr = arr.filter(el => el !== obj)
 
@@ -46,7 +47,7 @@ export function handleCamera(
   ctx: CanvasRenderingContext2D,
   camera: Camera,
   player: CharacterObject,
-  bounds: LevelBounds,
+  bounds: Bounds,
   delta: number
 ) {
   const cameraRight = camera.x + camera.width
@@ -96,4 +97,27 @@ export function handleCamera(
     camera.y += moveBy
     ctx.translate(0, -moveBy)
   }
+}
+
+export function translateObjectByAmount(obj: dynamicObject, moveBy: vec2d) {
+  obj.x += moveBy.x
+  obj.collisionBox.x1 = obj.x + obj.collisionBox.offset.x
+  obj.collisionBox.x2 = obj.x + obj.collisionBox.offset.x + obj.collisionBox.size.x
+
+  obj.y += moveBy.y
+  obj.collisionBox.y1 = obj.y + obj.collisionBox.offset.y
+  obj.collisionBox.y2 = obj.y + obj.collisionBox.offset.y + obj.collisionBox.size.y
+}
+
+
+// todo figure out the logic for this
+export function translateObjectToPoint(obj: dynamicObject, moveTo: vec2d) {
+
+  obj.x = moveTo.x
+  obj.collisionBox.x1 = obj.x + obj.collisionBox.offset.x
+  obj.collisionBox.x2 = obj.x + obj.collisionBox.offset.x + obj.collisionBox.size.x
+
+  obj.y = moveTo.y
+  obj.collisionBox.y1 = obj.y + obj.collisionBox.offset.y
+  obj.collisionBox.y2 = obj.y + obj.collisionBox.offset.y + obj.collisionBox.size.y
 }

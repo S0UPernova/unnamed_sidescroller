@@ -10,7 +10,6 @@ export function draw(ctx: CanvasRenderingContext2D, obj: gameObject, delta?: num
     case "ellipse": {
       ctx.beginPath()
       ctx.ellipse(obj.x, obj.y, obj.width, obj.height, 0, 0, 2 * Math.PI)
-      // ctx.arc(obj.x, obj.y, 20, 0, 2 * Math.PI)
       ctx.fillStyle = obj?.color ? obj.color : '#eee'
       ctx.fill()
     }
@@ -59,7 +58,6 @@ export function draw(ctx: CanvasRenderingContext2D, obj: gameObject, delta?: num
 
           const treeCol = (i) % (objWidth)
           const treeRow = Math.floor(i / objWidth)
-
           ctx.drawImage(
             obj.sprite.image,
             col * obj.tilesetData.tilewidth,
@@ -75,7 +73,15 @@ export function draw(ctx: CanvasRenderingContext2D, obj: gameObject, delta?: num
       })
       break
     case "animated":
-      drawAnimatedSprite(ctx, obj, delta)
+      // todo Add dev mode option for showing bounding boxes
+      // ctx.fillStyle = 'rgba(60, 0, 60, 0.3)'
+      // ctx.fillRect(obj.x, obj.y, obj.width, obj.height)
+
+      // todo Add dev mode option for showing collision boxes
+      // ctx.fillStyle = 'rgba(60, 0, 0, 0.5)'
+      // ctx.fillRect(obj.collisionBox.x1, obj.collisionBox.y1, obj.collisionBox.size.x, obj.collisionBox.size.y)
+      
+      drawAnimatedSprite(ctx, obj, delta !== undefined ? delta : 0)
       break
   }
 }
