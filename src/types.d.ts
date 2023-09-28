@@ -80,6 +80,7 @@ type Bounds = {
 type CharacterObject = gameObject & {
   jumpForce?: number
   attacks?: CharacterAttacks
+  attacking?: boolean
 }
 
 type AnimatedSprite = {

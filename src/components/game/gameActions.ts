@@ -69,14 +69,30 @@ export function jump(obj: CharacterObject, keyDown: boolean) {
   }
 }
 
-export function attack(obj: CharacterObject,attack: MeleeAttackInfo | RangedAttackInfo, keyDown: boolean) {
-  attack.launchedBy = obj
-  if (keyDown && attack.launchedBy.currentAnimation === "idle") {
-    attack.launchedBy.currentAnimation = "attack1"
-    if (!attack.launchedBy?.animations?.[attack.launchedBy.currentAnimation]) return 
-    const currentAnimation = attack.launchedBy.animations[attack.launchedBy.currentAnimation]
+export function attack(obj: CharacterObject, attack: MeleeAttackInfo | RangedAttackInfo, keyDown: boolean) {
+  // todo att check if current animation is interruptible and add a flag for it on the object
+
+  // todo add init values here for  position of ranged attacks
+
+
+  if (obj.currentAnimation === undefined) return//obj.currentAnimation = "idle"
+  if (obj.attacking === true) return
+  if (obj.currentAnimation === undefined || obj.animations === undefined) return
+  if (keyDown && obj.currentAnimation === "idle") {
+    // reset frame of old animation
+    obj.animations[obj.currentAnimation].currentFrame = 0
+    // start new animation
+    obj.currentAnimation = "attack1"
+    
+    if (!obj?.animations?.[obj.currentAnimation]) return
+    obj.attacking = true
+    const currentAnimation = obj.animations[obj.currentAnimation]
     setTimeout(() => {
+      if (obj.currentAnimation === undefined || obj.animations === undefined) return
       console.log("attacked")
+      obj.attacking = false
+      obj.animations[obj.currentAnimation].currentFrame = 0
+      obj.currentAnimation = currentAnimation.nextAnimation ? currentAnimation.nextAnimation : "idle"
     }, currentAnimation.frames / currentAnimation.framesPerSecond * 1000)
   }
 }

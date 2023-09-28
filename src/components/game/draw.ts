@@ -92,10 +92,10 @@ function drawAnimatedSprite(ctx: CanvasRenderingContext2D, obj: gameObject, delt
       obj.currentAnimation = "idle"
     }
 
-    if (obj.animations[obj.currentAnimation].nextAnimation !== undefined && obj.animations[obj.currentAnimation].loopAnimation === false && obj.animations[obj.currentAnimation].currentFrame >= obj.animations[obj.currentAnimation].frames -1) {
-      obj.animations[obj.currentAnimation].currentFrame = 0
-      obj.currentAnimation = obj.animations[obj.currentAnimation].nextAnimation as keyof CharacterAnimationMap
-    }
+    // if (obj.animations[obj.currentAnimation].nextAnimation !== undefined && obj.animations[obj.currentAnimation].loopAnimation === false && obj.animations[obj.currentAnimation].currentFrame >= obj.animations[obj.currentAnimation].frames -1) {
+      // obj.animations[obj.currentAnimation].currentFrame = 0
+      // obj.currentAnimation = obj.animations[obj.currentAnimation].nextAnimation as keyof CharacterAnimationMap
+    // }
 
     const currentAnimation = obj.animations[obj.currentAnimation]
     if (currentAnimation.timeSinceLastFrameUpdate === undefined || currentAnimation.timeSinceLastFrameUpdate < 0) currentAnimation.timeSinceLastFrameUpdate = 0
