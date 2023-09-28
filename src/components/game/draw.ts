@@ -1,6 +1,6 @@
 import { time } from "console"
 import { run } from "node:test"
-import { gameObject } from "../../types"
+import { CharacterAnimationMap, gameObject } from "../../types"
 import { levelInit } from "./initLevel"
 import { tileset } from "./sprites"
 
@@ -80,7 +80,7 @@ export function draw(ctx: CanvasRenderingContext2D, obj: gameObject, delta?: num
       // todo Add dev mode option for showing collision boxes
       // ctx.fillStyle = 'rgba(60, 0, 0, 0.5)'
       // ctx.fillRect(obj.collisionBox.x1, obj.collisionBox.y1, obj.collisionBox.size.x, obj.collisionBox.size.y)
-      
+
       drawAnimatedSprite(ctx, obj, delta !== undefined ? delta : 0)
       break
   }
@@ -91,6 +91,12 @@ function drawAnimatedSprite(ctx: CanvasRenderingContext2D, obj: gameObject, delt
     if (obj.velocity.y === 0 && obj.velocity.x === 0 && obj.currentAnimation === "jump") {
       obj.currentAnimation = "idle"
     }
+
+    if (obj.animations[obj.currentAnimation].nextAnimation !== undefined && obj.animations[obj.currentAnimation].loopAnimation === false && obj.animations[obj.currentAnimation].currentFrame >= obj.animations[obj.currentAnimation].frames -1) {
+      obj.animations[obj.currentAnimation].currentFrame = 0
+      obj.currentAnimation = obj.animations[obj.currentAnimation].nextAnimation as keyof CharacterAnimationMap
+    }
+
     const currentAnimation = obj.animations[obj.currentAnimation]
     if (currentAnimation.timeSinceLastFrameUpdate === undefined || currentAnimation.timeSinceLastFrameUpdate < 0) currentAnimation.timeSinceLastFrameUpdate = 0
     if (currentAnimation.currentFrame === undefined) currentAnimation.currentFrame = 0

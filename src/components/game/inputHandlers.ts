@@ -8,7 +8,8 @@ const controlMap: Controls = {
   "ArrowRight": "moveRight",
   "ArrowDown": "crouch",
   "ArrowLeft": "moveLeft",
-  " ": "enableGravity",
+  "Enter": "enableGravity",
+  " ": "attack1",
   "w": "jump",
   "a": "moveLeft",
   "s": "crouch",
@@ -39,7 +40,16 @@ function handleControls(obj: CharacterObject) {
       }
       
       // todo refactor to be able to make it work in standard input for click to move to point
-      CharacterActionMap[action](obj, v)
+      if (action === "attack1" || action === "attack2" || action === "attack3") {
+        // CharacterActionMap[action]
+        if (obj.attacks !== undefined) {
+          CharacterActionMap[action](obj, obj.attacks[action], v)
+        }
+
+      }
+      else {
+        CharacterActionMap[action](obj, v)
+      }
       if (v === false) {
         delete input[key]
       }

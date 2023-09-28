@@ -33,7 +33,7 @@ export function levelRender(context: CanvasRenderingContext2D, delta: number, le
   if (levelData.player.gravityMultiplier === undefined) {
     context.scale(4, 4)
     context.fillStyle = "#aaa"
-    context.fillText("press space to start", (levelData.bounds.x2 / 12) - 50, levelData.bounds.y2 / 20)
+    context.fillText("press enter to start", (levelData.bounds.x2 / 12) - 50, levelData.bounds.y2 / 20)
     context.scale(.25, .25)
   }
 

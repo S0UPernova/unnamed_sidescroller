@@ -88,22 +88,22 @@ export function checkForAnObjectCollision(object1: dynamicObject, object2: dynam
 
 /**
  * 
- * @param {gameObject} object1 
- * @param {gameObject} object2 
+ * @param {gameObject} bounds1 
+ * @param {gameObject} bounds2 
  * @returns {boolean} 
  */
-export function isColliding(object1: dynamicObject, object2: dynamicObject): boolean {
+export function isColliding(bounds1: Bounds, bounds2: Bounds): boolean {
   return (
-    Math.floor(object1.collisionBox.y2) > Math.floor(object2.collisionBox.y1)
-    && Math.floor(object1.collisionBox.y1) < Math.floor(object2.collisionBox.y2)
-    && Math.floor(object1.collisionBox.x2) > Math.floor(object2.collisionBox.x1)
-    && Math.floor(object1.collisionBox.x1) < Math.floor(object2.collisionBox.x2))
+    Math.floor(bounds1.y2) > Math.floor(bounds2.y1)
+    && Math.floor(bounds1.y1) < Math.floor(bounds2.y2)
+    && Math.floor(bounds1.x2) > Math.floor(bounds2.x1)
+    && Math.floor(bounds1.x1) < Math.floor(bounds2.x2))
 }
 
 function isCollidingTop(object1: dynamicObject, object2: dynamicObject): boolean {
   return (
     (object1.velocity.y > 0 || object2.velocity.y < 0)
-     && isColliding(object1, object2)
+     && isColliding(object1.collisionBox, object2.collisionBox)
 
     // Adding some margin into the object 
     && Math.floor(object1.collisionBox.y2) < Math.floor(object2.collisionBox.y1 + (object2.collisionBox.size.y / 2))
@@ -113,7 +113,7 @@ function isCollidingTop(object1: dynamicObject, object2: dynamicObject): boolean
 function isCollidingBottom(object1: dynamicObject, object2: dynamicObject): boolean {
   return (
     (object1.velocity.y < 0 || object2.velocity.y > 0)
-    && isColliding(object1, object2)
+    && isColliding(object1.collisionBox, object2.collisionBox)
 
     // Adding some margin into the object 
     && Math.floor(object1.collisionBox.y1) > Math.floor(object2.collisionBox.y2 - (object2.collisionBox.size.y / 2))
@@ -123,7 +123,7 @@ function isCollidingBottom(object1: dynamicObject, object2: dynamicObject): bool
 function isCollidingLeft(object1: dynamicObject, object2: dynamicObject): boolean {
   return (
     (object1.velocity.x > 0 || object2.velocity.x < 0)
-    && isColliding(object1, object2)
+    && isColliding(object1.collisionBox, object2.collisionBox)
 
     // Adding some margin into object
     && Math.floor(object1.collisionBox.x1 + object1.collisionBox.size.x) < Math.floor(object2.collisionBox.x1 + (object1.collisionBox.size.x / 2))
@@ -133,7 +133,7 @@ function isCollidingLeft(object1: dynamicObject, object2: dynamicObject): boolea
 function isCollidingRight(object1: dynamicObject, object2: dynamicObject): boolean {
   return (
     (object1.velocity.x < 0 || object2.velocity.x > 0)
-    && isColliding(object1, object2)
+    && isColliding(object1.collisionBox, object2.collisionBox)
 
     // Adding some margin into object
     && Math.floor(object1.collisionBox.x1) > Math.floor(object2.collisionBox.x2 - (object1.collisionBox.size.x / 2))

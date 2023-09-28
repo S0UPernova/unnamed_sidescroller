@@ -1,11 +1,11 @@
 import { BlobOptions } from "buffer"
 import { ExecFileOptionsWithStringEncoding } from "child_process"
-import { Characters, Sprite } from "./components/game/sprites"
+import { CharacterAttacks, Characters, Sprite } from "./components/game/sprites"
 
 
 // todo get functions to take the simplest one possible
 // todo make separate dynamic gameObject
-type gameObject  =  dynamicObject & tileObject & AnimatedObject
+type gameObject = dynamicObject & tileObject & AnimatedObject
 
 type tileObject = dynamicObject & {
   tileArr?: number[]
@@ -18,7 +18,7 @@ type AnimatedObject = dynamicObject & {
 
   sprite: AnimatedSprite | undefined // todo refactor to have this be the static image option
   currentAnimation?: keyof CharacterAnimationMap
-  idleAnimation?:  AnimatedSprite
+  idleAnimation?: AnimatedSprite
   animations?: CharacterAnimationMap
   actionToAnimationMap?: ActionToAnimationMap
 }
@@ -30,7 +30,7 @@ type staticObject = {
   height: number,
   color?: hexString,
   collisions: Collisions,
-  collisionBox: Bounds & {offset: vec2d, size: vec2d}
+  collisionBox: Bounds & { offset: vec2d, size: vec2d }
   shape: Shape
 }
 
@@ -51,7 +51,12 @@ type CycleType = "circular" | "reversing"
 type CharacterAnimationMap = {
   idle: AnimatedSprite,
   run: AnimatedSprite,
-  jump: AnimatedSprite
+  jump: AnimatedSprite,
+  attack1: AnimatedSprite,
+  attack2: AnimatedSprite,
+  attack3: AnimatedSprite,
+  runAttack: AnimatedSprite,
+  dead: AnimatedSprite,
 }
 type keys = keyof typeof CharacterActionMap
 // type ActionToAnimationMap = {
@@ -74,6 +79,7 @@ type Bounds = {
 
 type CharacterObject = gameObject & {
   jumpForce?: number
+  attacks?: CharacterAttacks
 }
 
 type AnimatedSprite = {
@@ -83,6 +89,28 @@ type AnimatedSprite = {
   currentFrame: number
   image: HTMLImageElement
   loopAnimation: boolean
+  nextAnimation: keyof CharacterAnimationMap | undefined
+}
+type MeleeAttackInfo = {
+  attackType: "melee",
+  attackAnimation: keyof CharacterAnimationMap
+  launchedBy: CharacterObject
+  offset: vec2d
+  size: vec2d
+  damage: number
+}
+type RangedAttackInfo = {
+  attackType: "ranged",
+  launchedBy: CharacterObject,
+  attackAnimation: keyof CharacterAnimationMap
+  startPos: vec2d,
+  currentPos: vec2d,
+  velocity: vec2d,
+  size: vec2d,
+  range: number,
+  damageFalloff: number
+  damageFalloffStart: number
+  damage: number,
 }
 
 type ActionToAnimationMap = {
@@ -107,7 +135,10 @@ type CharacterActions = {
   crouch: CharacterAction
   moveRight: CharacterAction
   moveLeft: CharacterAction
-  enableGravity: CharacterAction
+  enableGravity: CharacterAction,
+  attack1: (attack: MeleeAttackInfo | RangedAttackInfo, keyDown: boolean) => void,
+  attack2: (attack: MeleeAttackInfo | RangedAttackInfo, keyDown: boolean) => void
+  attack3: (attack: MeleeAttackInfo | RangedAttackInfo, keyDown: boolean) => void
 } & gameObjectAction
 
 type CharacterAction = (obj: gameObject, keyDown: boolean) => void

@@ -2,7 +2,7 @@ import { timingSafeEqual } from 'crypto'
 import { Camera, CharacterObject, Collisions, CycleType, gameObject, hexString, LayerObject, CustomProps, Bounds, LevelJson, LevelLayer, TileSet, vec2d, WhereIs } from '../../types'
 import { characterObjectFactory, gameObjectFactory } from './factories'
 import * as level1 from './levels/level1.json'
-import { Sprite, tileset, warewolf } from './sprites'
+import { Sprite, tileset, werewolf } from './sprites'
 
 export interface LevelInitReturn {
   tiles: gameObject[]

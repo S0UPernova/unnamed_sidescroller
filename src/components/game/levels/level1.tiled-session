@@ -27,11 +27,11 @@
             "scaleInDock": 1
         },
         "level1.json": {
-            "scale": 0.5,
+            "scale": 1,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 1096,
-                "y": 642
+                "x": 511,
+                "y": 1255
             }
         },
         "level1.json#tileset": {

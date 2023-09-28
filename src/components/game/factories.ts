@@ -41,7 +41,8 @@ export function gameObjectFactory(obj: factoryInput): gameObject {
       framesPerSecond: 1,
       image: image,
       timeSinceLastFrameUpdate: 0,
-      loopAnimation: false
+      loopAnimation: false,
+      nextAnimation: undefined
     }
   }
   // }
@@ -88,9 +89,7 @@ const collisionBox: Bounds & {offset: vec2d, size: vec2d} = {
     color: obj?.color ? obj.color : undefined,
     shape: obj.shape ? obj.shape : "rectangle",
     sprite: image?.src ? animatedSprite : undefined,
-    currentAnimation: obj.character !== undefined ? "idle" : undefined,
-    animations: obj.character !== undefined ? sprites.Characters[obj.character].animationMap : undefined,
-    actionToAnimationMap: obj.character !== undefined ? sprites.Characters[obj.character].actionToAnimationMap : undefined,
+   
     collisions: collisions,
     tileArr: obj.tileArr !== undefined ? obj.tileArr : undefined,
     tilesetData: obj.tilesetData !== undefined ? obj.tilesetData : undefined,
@@ -109,9 +108,13 @@ const collisionBox: Bounds & {offset: vec2d, size: vec2d} = {
 export function characterObjectFactory(obj: factoryInput): CharacterObject {
   const character: CharacterObject = {
     ...gameObjectFactory(obj),
+    currentAnimation: obj.character !== undefined ? "idle" : undefined,
+    animations: obj.character !== undefined ? sprites.Characters[obj.character].animationMap : undefined,
+    actionToAnimationMap: obj.character !== undefined ? sprites.Characters[obj.character].actionToAnimationMap : undefined,
     gravityMultiplier: undefined,
     weight: obj.weight ? obj.weight : .25,
-    jumpForce: obj.jumpForce ? obj.jumpForce : 3
+    jumpForce: obj.jumpForce ? obj.jumpForce : 3,
+    attacks: obj.character !== undefined ? sprites.Characters[obj.character].attacks : undefined,
   }
 
   return character

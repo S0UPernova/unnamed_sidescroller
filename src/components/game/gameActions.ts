@@ -1,4 +1,5 @@
-import { CharacterObject, dynamicObject, gameObject, vec2d } from "../../types"
+import { Bounds, CharacterObject, dynamicObject, gameObject, MeleeAttackInfo, RangedAttackInfo, staticObject, vec2d } from "../../types"
+import { checkForAnObjectCollision, isColliding } from "./collisions"
 
 export function moveRight(obj: CharacterObject, keyDown: boolean) {
   if (keyDown && obj.velocity.x >= 0) {
@@ -68,8 +69,49 @@ export function jump(obj: CharacterObject, keyDown: boolean) {
   }
 }
 
+export function attack(obj: CharacterObject,attack: MeleeAttackInfo | RangedAttackInfo, keyDown: boolean) {
+  attack.launchedBy = obj
+  if (keyDown && attack.launchedBy.currentAnimation === "idle") {
+    attack.launchedBy.currentAnimation = "attack1"
+    if (!attack.launchedBy?.animations?.[attack.launchedBy.currentAnimation]) return 
+    const currentAnimation = attack.launchedBy.animations[attack.launchedBy.currentAnimation]
+    setTimeout(() => {
+      console.log("attacked")
+    }, currentAnimation.frames / currentAnimation.framesPerSecond * 1000)
+  }
+}
+
 export function crouch(obj: CharacterObject, keyDown: boolean) {
   // todo add export functionality
+}
+function checkForHit(attack: RangedAttackInfo & MeleeAttackInfo, obj: CharacterObject, objArr: staticObject[], fn?: (obj: RangedAttackInfo | MeleeAttackInfo, target: staticObject) => void) {
+  const bounds = getAttackBounds(attack)
+  objArr.forEach(target => {
+    if (isColliding(bounds, target.collisionBox)) {
+      // handle the hit
+      if (fn !== undefined) {
+        fn(attack, target)
+      }
+    }
+  })
+}
+
+function getAttackBounds(attack: MeleeAttackInfo | RangedAttackInfo): Bounds {
+  if (attack.attackType === "melee") {
+    return {
+      x1: attack.launchedBy.x + attack.offset.x,
+      x2: attack.launchedBy.x + attack.offset.x + attack.size.x,
+      y1: attack.launchedBy.y + attack.offset.y,
+      y2: attack.launchedBy.y + attack.offset.y + attack.size.y,
+    }
+  }
+  else
+    return {
+      x1: attack.currentPos.x,
+      x2: attack.currentPos.x + attack.size.x,
+      y1: attack.currentPos.y,
+      y2: attack.currentPos.y + attack.size.y,
+    }
 }
 
 export function stopX(obj: gameObject) {
@@ -105,8 +147,6 @@ export function enableGravity(obj: CharacterObject, keyDown: boolean) {
 /**
  * 
  * @param {gameObject} obj 
- * @param {vec2d} posList 
- * @param {number} currentPos 
  * @returns {number} the current step in the cycle
  */
 export function cycleThroughPositions(obj: dynamicObject): void {
@@ -166,7 +206,10 @@ export const CharacterActionMap = {
   moveRight,
   jump,
   crouch,
-  enableGravity
+  enableGravity,
+  attack1: attack,
+  attack2: attack,
+  attack3: attack
 }
 
 export const GameObjectActionMap = {

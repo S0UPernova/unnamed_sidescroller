@@ -11,12 +11,15 @@
 - Add separate collision boxes for characters separate from the height and width (done)
 
 
+- Make conditions and such part of the attack object
+- Make sure attacks are modular so that Characters can implement different attacks for their available slots
+- Add more attacks (including ranged)
+
 - Add level maker function (needs work still)
 - Modularize the sprite animation so that the draw will run the animation for the current action (mostly have it)
 - clean up sprite and animated stuff asap
 - Maybe allow player to traverse between layers to allow different movement options
 - Make player start come from tiled
-- Add dev mode, that logs things, and maybe a console to effect the game and showing hitboxes and such
 
 
 
@@ -32,3 +35,4 @@
 
 - Add to sprite type all that is needed for sprite animations
 - Mabe add compose option for gameObjects to be of multiple blocks and colors that move in relation to each other maybe make it an array that sets the x and y relative to obj.x and obj.y 
+- Add dev mode, that logs things, and maybe a console to effect the game and showing hitboxes and such
