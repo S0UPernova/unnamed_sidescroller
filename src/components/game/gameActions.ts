@@ -1,5 +1,7 @@
+import { run } from "node:test"
 import { Bounds, CharacterObject, dynamicObject, gameObject, MeleeAttackInfo, RangedAttackInfo, staticObject, vec2d } from "../../types"
 import { checkForAnObjectCollision, isColliding } from "./collisions"
+import { controlMap, input } from "./inputHandlers"
 
 export function moveRight(obj: CharacterObject, keyDown: boolean) {
   if (keyDown && obj.velocity.x >= 0) {
@@ -70,44 +72,58 @@ export function jump(obj: CharacterObject, keyDown: boolean) {
 }
 
 export function attack(obj: CharacterObject, attack: MeleeAttackInfo | RangedAttackInfo, keyDown: boolean) {
-  // todo att check if current animation is interruptible and add a flag for it on the object
+  // todo setup ranged attacks
 
-  // todo add init values here for  position of ranged attacks
-
-
-  if (obj.currentAnimation === undefined) return//obj.currentAnimation = "idle"
+  if (obj.currentAnimation === undefined) return
   if (obj.attacking === true) return
   if (obj.currentAnimation === undefined || obj.animations === undefined) return
-  if (keyDown && obj.currentAnimation === "idle") {
-    // reset frame of old animation
+  if (!keyDown || (obj.currentAnimation !== "idle" && obj.currentAnimation !== "run")) return
+  if (!obj?.animations?.[obj.currentAnimation]) return
+
+  // reset frame of old animation
+  obj.animations[obj.currentAnimation].currentFrame = 0
+
+
+  // start new animation
+  obj.currentAnimation = attack.attackAnimation
+
+  obj.attacking = true
+  const currentAnimation = obj.animations[obj.currentAnimation]
+  setTimeout(() => {
+    if (obj.currentAnimation === undefined || obj.animations === undefined) return
+
+    console.log("attacked")
+
+    obj.attacking = false
     obj.animations[obj.currentAnimation].currentFrame = 0
-    // start new animation
-    obj.currentAnimation = "attack1"
-    
-    if (!obj?.animations?.[obj.currentAnimation]) return
-    obj.attacking = true
-    const currentAnimation = obj.animations[obj.currentAnimation]
-    setTimeout(() => {
-      if (obj.currentAnimation === undefined || obj.animations === undefined) return
-      console.log("attacked")
-      obj.attacking = false
-      obj.animations[obj.currentAnimation].currentFrame = 0
-      obj.currentAnimation = currentAnimation.nextAnimation ? currentAnimation.nextAnimation : "idle"
-    }, currentAnimation.frames / currentAnimation.framesPerSecond * 1000)
-  }
+    obj.currentAnimation = currentAnimation.nextAnimation ? currentAnimation.nextAnimation : "idle"
+
+    // get list of hittable things
+    RunFunctionOnHit(attack, obj, [], () => {
+      // do the damage
+    })
+
+    //? does this belong here?
+    for (const [k, v] of Object.entries(controlMap)) {
+      if (v === "moveLeft" || "moveRight") {
+        if (Object.keys(input).includes(k)) return
+        else {
+          obj.velocity.x = 0
+        }
+      }
+    }
+  }, currentAnimation.frames / currentAnimation.framesPerSecond * 1000)
 }
 
 export function crouch(obj: CharacterObject, keyDown: boolean) {
   // todo add export functionality
 }
-function checkForHit(attack: RangedAttackInfo & MeleeAttackInfo, obj: CharacterObject, objArr: staticObject[], fn?: (obj: RangedAttackInfo | MeleeAttackInfo, target: staticObject) => void) {
+function RunFunctionOnHit(attack: RangedAttackInfo | MeleeAttackInfo, obj: CharacterObject, objArr: staticObject[], fn: (obj: RangedAttackInfo | MeleeAttackInfo, target: staticObject) => void) {
   const bounds = getAttackBounds(attack)
   objArr.forEach(target => {
     if (isColliding(bounds, target.collisionBox)) {
       // handle the hit
-      if (fn !== undefined) {
-        fn(attack, target)
-      }
+      fn(attack, target)
     }
   })
 }

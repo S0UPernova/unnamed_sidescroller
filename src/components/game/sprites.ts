@@ -66,7 +66,7 @@ export const WerewolfSprites: CharacterAnimationMap = {
     currentFrame: 0,
     timeSinceLastFrameUpdate: 0,
     loopAnimation: false,
-    nextAnimation: "idle"
+    nextAnimation: "idle",
   },
   attack3: {
     image: returnImage(wereAttackThree),
@@ -79,8 +79,8 @@ export const WerewolfSprites: CharacterAnimationMap = {
   },
   runAttack: {
     image: returnImage(wereRunAttack),
-    frames: 11,
-    framesPerSecond: 24,
+    frames: 7,
+    framesPerSecond: 15,
     currentFrame: 0,
     timeSinceLastFrameUpdate: 0,
     loopAnimation: false,
@@ -101,6 +101,7 @@ export type CharacterAttacks = {
   attack1: RangedAttackInfo | MeleeAttackInfo
   attack2: RangedAttackInfo | MeleeAttackInfo
   attack3: RangedAttackInfo | MeleeAttackInfo
+  runAttack: RangedAttackInfo | MeleeAttackInfo
 }
 
 const wereAttacks: CharacterAttacks = {
@@ -110,8 +111,7 @@ const wereAttacks: CharacterAttacks = {
     damage: 3,
     launchedBy: {} as CharacterObject, // must be set on init
     offset: {x: 0, y: 0},
-    size: {x: 0, y: 0}
-
+    size: {x: 0, y: 0},
   },
   attack2: {
     attackType: "melee",
@@ -119,8 +119,7 @@ const wereAttacks: CharacterAttacks = {
     damage: 3,
     launchedBy: {} as CharacterObject, // must be set on init
     offset: {x: 0, y: 0},
-    size: {x: 0, y: 0}
-
+    size: {x: 0, y: 0},
   },
   attack3: {
     attackAnimation: "attack3",
@@ -133,7 +132,15 @@ const wereAttacks: CharacterAttacks = {
     attackType: "ranged",
     damage: 3,
     launchedBy: {} as CharacterObject, // must be set on init
-    size: {x: 0, y: 0}
+    size: {x: 0, y: 0},
+  },
+  runAttack: {
+    attackAnimation: "runAttack",
+    attackType: "melee",
+    damage: 3,
+    launchedBy: {} as CharacterObject, // must be set on init
+    offset: {x: 0, y: 0},
+    size: {x: 0, y: 0},
   }
 }
 

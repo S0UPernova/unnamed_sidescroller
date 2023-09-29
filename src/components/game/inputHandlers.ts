@@ -3,7 +3,7 @@ import { CharacterActionMap, GameObjectActionMap } from "./gameActions"
 
 
 
-const controlMap: Controls = {
+export const controlMap: Controls = {
   "ArrowUp": "jump",
   "ArrowRight": "moveRight",
   "ArrowDown": "crouch",
@@ -21,8 +21,7 @@ type Input = {
 }
 
 // current input object
-const input: Input = {}
-
+export const input: Input = {}
 function handleControls(obj: CharacterObject) {
   let left: boolean = false
   let right: boolean = false
@@ -30,7 +29,7 @@ function handleControls(obj: CharacterObject) {
     if (Object.keys(controlMap).includes(k)) {
       const key = k as keyof Controls
       const action = controlMap[key]
-      
+
       // special case to handle
       if (action === "moveRight" && v === true) {
         right = true
@@ -38,16 +37,22 @@ function handleControls(obj: CharacterObject) {
       if (action === "moveLeft" && v === true) {
         left = true
       }
-      
+
       // todo refactor to be able to make it work in standard input for click to move to point
       if (action === "attack1" || action === "attack2" || action === "attack3") {
         // CharacterActionMap[action]
         if (obj.attacks !== undefined) {
-          CharacterActionMap[action](obj, obj.attacks[action], v)
+          // todo add state mods for each attack, so if jumping do this instead, running, another alt.
+          if (obj.currentAnimation === "run") {
+            CharacterActionMap[action](obj, obj.attacks["runAttack"], v)
+          }
+          else if (!obj.attacking) {
+            CharacterActionMap[action](obj, obj.attacks[action], v)
+          }
         }
 
       }
-      else {
+      else if (!obj.attacking) {
         CharacterActionMap[action](obj, v)
       }
       if (v === false) {
