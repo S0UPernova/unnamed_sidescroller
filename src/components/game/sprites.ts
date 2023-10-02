@@ -61,8 +61,8 @@ export const WerewolfSprites: CharacterAnimationMap = {
   },
   attack2: {
     image: returnImage(wereAttackTwo),
-    frames: 11,
-    framesPerSecond: 24,
+    frames: 4,
+    framesPerSecond: 12,
     currentFrame: 0,
     timeSinceLastFrameUpdate: 0,
     loopAnimation: false,
@@ -70,8 +70,8 @@ export const WerewolfSprites: CharacterAnimationMap = {
   },
   attack3: {
     image: returnImage(wereAttackThree),
-    frames: 11,
-    framesPerSecond: 24,
+    frames: 5,
+    framesPerSecond: 12,
     currentFrame: 0,
     timeSinceLastFrameUpdate: 0,
     loopAnimation: false,
@@ -115,7 +115,7 @@ const wereAttacks: CharacterAttacks = {
   },
   attack2: {
     attackType: "melee",
-    attackAnimation: "attack1",
+    attackAnimation: "attack2",
     damage: 3,
     launchedBy: {} as CharacterObject, // must be set on init
     offset: {x: 0, y: 0},
@@ -123,15 +123,10 @@ const wereAttacks: CharacterAttacks = {
   },
   attack3: {
     attackAnimation: "attack3",
-    startPos: {x: 0, y: 0},
-    currentPos: {x: 0, y: 0},
-    damageFalloff: 0,
-    damageFalloffStart: 0,
-    range: 0,
-    velocity: {x: 0, y: 0},
-    attackType: "ranged",
+    attackType: "melee",
     damage: 3,
     launchedBy: {} as CharacterObject, // must be set on init
+    offset: {x: 0, y: 0},
     size: {x: 0, y: 0},
   },
   runAttack: {
@@ -151,7 +146,6 @@ export const werewolf  = {
     moveRight: "run",
     moveLeft: "run",
     jump: "idle",
-    attackOne: "attackOne"
   },
   attacks: wereAttacks
   

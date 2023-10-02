@@ -10,6 +10,8 @@ export const controlMap: Controls = {
   "ArrowLeft": "moveLeft",
   "Enter": "enableGravity",
   " ": "attack1",
+  "Control": "attack2",
+  "Shift": "attack3",
   "w": "jump",
   "a": "moveLeft",
   "s": "crouch",
