@@ -34,7 +34,7 @@ export function levelInit(levelNumber: number, canvasHeight: number, canvasWidth
     width: canvasWidth,
   }
 
-  const player = characterObjectFactory({ x: (bounds.x2 / 2) - 50, y: bounds.y1 + 50, height: 60, width: 60, shape: "animated", character: "warewolf",  moveSpeed: 1, jumpForce: 3, weight: 0.5, colisionBox: {offset: {x: 0, y: 20}, size: {x: 60, y: 40}} })
+  const player = characterObjectFactory({ x: (bounds.x2 / 2) - 50, y: bounds.y1 + 50, height: 60, width: 60, shape: "animated", character: "werewolf",  moveSpeed: 1, jumpForce: 3, weight: 0.5, collisionBox: {offset: {x: 0, y: 20}, size: {x: 60, y: 40}} })
 
   return {
     tiles: tiles,
@@ -63,7 +63,7 @@ function buildObjects(level: LevelJson) {
         break
       }
       case "background":
-      case "midground": {
+      case "middleGround": {
         tileFactory(level, layerNum).forEach(obj => tiles.push(obj))
       }
         break

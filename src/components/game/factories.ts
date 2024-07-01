@@ -13,7 +13,7 @@ interface factoryInput {
   color?: hexString,
   jumpForce?: number, // todo refactor this out
   weight?: number,
-  colisionBox?: {offset: vec2d, size: vec2d},
+  collisionBox?: {offset: vec2d, size: vec2d},
   character?: keyof typeof sprites.Characters
   positions?: vec2d[]
 
@@ -72,12 +72,12 @@ export function gameObjectFactory(obj: factoryInput): gameObject {
     }
   }
 const collisionBox: Bounds & {offset: vec2d, size: vec2d} = {
-  offset: {x: obj.colisionBox ? obj.colisionBox.offset.x : 0, y: obj.colisionBox ? obj.colisionBox.offset.y : 0},
-  size: {x: obj.colisionBox ? obj.colisionBox.size.x : obj.width, y: obj.colisionBox ? obj.colisionBox.size.y : obj.height},
-  x1: obj.colisionBox !== undefined ? obj.x + obj.colisionBox.offset.x : obj.x,
-  x2: obj.colisionBox !== undefined ? obj.x + obj.colisionBox.offset.x + obj.colisionBox.size.x : obj.x + obj.width,
-  y1: obj.colisionBox !== undefined ? obj.y + obj.colisionBox.offset.y : obj.y,
-  y2: obj.colisionBox !== undefined ? obj.y + obj.colisionBox.offset.y + obj.colisionBox.size.y : obj.x,
+  offset: {x: obj.collisionBox ? obj.collisionBox.offset.x : 0, y: obj.collisionBox ? obj.collisionBox.offset.y : 0},
+  size: {x: obj.collisionBox ? obj.collisionBox.size.x : obj.width, y: obj.collisionBox ? obj.collisionBox.size.y : obj.height},
+  x1: obj.collisionBox !== undefined ? obj.x + obj.collisionBox.offset.x : obj.x,
+  x2: obj.collisionBox !== undefined ? obj.x + obj.collisionBox.offset.x + obj.collisionBox.size.x : obj.x + obj.width,
+  y1: obj.collisionBox !== undefined ? obj.y + obj.collisionBox.offset.y : obj.y,
+  y2: obj.collisionBox !== undefined ? obj.y + obj.collisionBox.offset.y + obj.collisionBox.size.y : obj.x,
 
 }
 

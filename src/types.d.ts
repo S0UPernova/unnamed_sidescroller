@@ -60,7 +60,7 @@ type CharacterAnimationMap = {
 }
 type keys = keyof typeof CharacterActionMap
 // type ActionToAnimationMap = {
-//   [key: (keys | string)]: keyof WarewolfAnimationMap
+//   [key: (keys | string)]: keyof WerewolfAnimationMap
 // }
 
 type Camera = {
@@ -168,7 +168,7 @@ type TileSet = {
   "tilewidth": number
 }
 
-type WhereIs = "backgound" | "midground" | "foreground"
+type WhereIs = "background" | "middleGround" | "foreground"
 
 type CustomProps = {
   "name": string

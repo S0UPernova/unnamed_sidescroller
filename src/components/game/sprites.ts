@@ -150,8 +150,8 @@ export const werewolf  = {
   attacks: wereAttacks
   
 }
-export const Characters = { warewolf: werewolf }
-// WarewolfSprites.idle
+export const Characters = { werewolf: werewolf }
+// WerewolfSprites.idle
 // todo have this export AnimatedSprite type
 export {
   sprite,
